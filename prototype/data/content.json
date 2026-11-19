@@ -584,25 +584,5 @@
       }
     ],
     "resume": "https://animenzzz128.github.io/resume/Jiaqi_Yao_Resume_EN.pdf"
-  },
-  "seedMemories": [
-    {
-      "id": "pixel-room-origin",
-      "slotId": "S2",
-      "title": {
-        "zh": "小屋诞生的那天",
-        "en": "The day the room was born"
-      },
-      "date": "2026-11",
-      "story": {
-        "zh": "这是小屋的原图：一张 AI 生成的插画，再用脚本吸附成像素网格。这个网站就是从这里开始的。",
-        "en": "The room's original picture: an AI-generated illustration, snapped to a pixel grid by script. This site started here."
-      },
-      "tags": [
-        "小屋",
-        "pixel"
-      ],
-      "photo": "assets/memories/pixel-room-origin.jpg"
-    }
-  ]
+  }
 }

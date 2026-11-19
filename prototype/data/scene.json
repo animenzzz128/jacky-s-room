@@ -7,11 +7,6 @@
   "embed": {
     "allowedOrigins": []
   },
-  "ai": {
-    "enabled": true,
-    "endpoint": "/api/analyze-photo",
-    "ownerCheck": "/api/owner-check"
-  },
   "avatar": {
     "openR": {
       "src": "assets/avatar/eye_open_r.png",

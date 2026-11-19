@@ -1,0 +1,27 @@
+{
+  "memories": [
+    {
+      "id": "pixel-room-origin",
+      "slot": "S2",
+      "photo": "assets/memories/pixel-room-origin.jpg",
+      "sprite": "assets/memories/pixel-room-origin.sprite.png",
+      "title": {
+        "zh": "小屋诞生的那天",
+        "en": "The day the room was born"
+      },
+      "date": "2026-11",
+      "story": {
+        "zh": "这是小屋的原图：一张 AI 生成的插画，再用脚本吸附成像素网格。这个网站就是从这里开始的。",
+        "en": "The room's original picture: an AI-generated illustration, snapped to a pixel grid by script. This site started here."
+      },
+      "alt": {
+        "zh": "像素小屋的第一张插画：黄昏书房里戴耳机的 Q 版角色在用电脑",
+        "en": "The first pixel-room illustration: a chibi character with headphones at a laptop in a dusk study"
+      },
+      "tags": [
+        "小屋",
+        "pixel"
+      ]
+    }
+  ]
+}

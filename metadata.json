@@ -1,6 +1,5 @@
 {
   "name": "像素小屋 · Pixel Room Showcase",
-  "description": "An interactive 2D lo-fi pixel-art personal room. Click objects to learn about me; uploaded photos become pixel objects in the room (Gemini).",
-  "requestFramePermissions": [],
-  "majorCapabilities": ["MAJOR_CAPABILITY_SERVER_SIDE_GEMINI_API"]
+  "description": "An interactive 2D lo-fi pixel-art personal room. Click objects to learn about me; photo memories appear as little pixel objects in the room.",
+  "requestFramePermissions": []
 }
