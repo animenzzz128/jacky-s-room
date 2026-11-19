@@ -1,5 +1,5 @@
 {
-  "_说明": "所有面板里的文字都在这里，每一项都有 zh / en 两个版本。面板里关于我的事实取自个人网站 animenzzz128.github.io 已公开的内容；其中 Level 0、毕业去哪儿（Grad Trip）、像素小屋（Jacky's Room）三条以网站分支 feat/projects-and-games 为准，该分支待部署，部署后才与线上网站一致；欢迎语、彩蛋（青蛙台词）和面板引导语是小屋自写的界面文字，不来自网站。书单、目标、荣誉、在学、冷知识还没有内容，对应物件暂时放在 scene.json 的 _hiddenHotspots 里，填好后移回 hotspots 即可。",
+  "_说明": "所有面板里的文字都在这里，每一项都有 zh / en 两个版本。面板里关于我的事实取自个人网站 animenzzz128.github.io 已公开的内容；其中 Level 0、毕业去哪儿（Grad Trip）、像素小屋（Jacky's Room）三条与 2026-11-18 上线的网站一致；欢迎语、彩蛋（青蛙台词）和面板引导语是小屋自写的界面文字，不来自网站。书单、目标、荣誉、在学、冷知识还没有内容，对应物件暂时放在 scene.json 的 _hiddenHotspots 里，填好后移回 hotspots 即可。",
   "profile": {
     "name": {
       "zh": "Jacky",
