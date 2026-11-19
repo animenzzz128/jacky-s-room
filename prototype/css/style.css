@@ -99,7 +99,10 @@ button, a, label[for], .hot { cursor: url('../assets/ui/cursor-hand.png') 8 0, p
 }
 .hud-btns { display: flex; gap: 6px; flex: none; }
 #hud .px-btn { font-size: var(--fs-s); padding: 2px 8px; }
-.embed [data-hud="upload"] { display: none; }
+/* 站长模式：上传和站长徽章只给站长看；嵌入到其他网站时一律不显示上传 */
+#hud [data-hud="upload"], #hud [data-hud="owner"] { display: none; }
+.is-owner #hud [data-hud="upload"], .is-owner #hud [data-hud="owner"] { display: inline-flex; }
+.embed #hud [data-hud="upload"] { display: none; }
 
 @media (min-width: 1100px) {
   #hud .px-btn { font-size: var(--fs); padding: 0 10px; }
@@ -726,3 +729,13 @@ textarea { resize: vertical; }
 .ai-status { flex: 1; min-width: 200px; }
 .consent { display: flex; gap: 8px; align-items: center; margin-top: 12px; color: var(--amber); }
 .consent input { width: 18px; height: 18px; accent-color: var(--amber); }
+
+/* 站长面板 */
+.owner-form input[type="password"] {
+  font: inherit;
+  color: var(--ink);
+  background: var(--cream);
+  border: var(--u) solid var(--ink);
+  padding: 4px 8px;
+  width: 100%;
+}

@@ -20,6 +20,24 @@ const STRINGS = {
   hudAlbum: { zh: '相册', en: 'Album' },
   hudUpload: { zh: '＋照片', en: '+ Photo' },
   hudContact: { zh: '联系我', en: 'Contact' },
+  hudOwner: { zh: '站长 ✓', en: 'Owner ✓' },
+
+  // 站长模式
+  p_owner: { zh: '站长模式', en: 'Owner mode' },
+  owner_intro: { zh: '输入站长密钥后，就能在这台设备上传照片、生成 AI 摆件、整理记忆。密钥只保存在这台设备的浏览器里。', en: 'Enter the owner key to upload photos, make AI objects and manage memories on this device. The key is only stored in this browser.' },
+  owner_key: { zh: '站长密钥', en: 'Owner key' },
+  owner_enter: { zh: '进入站长模式', en: 'Enter owner mode' },
+  owner_wrong: { zh: '密钥不对', en: 'Wrong key' },
+  owner_noserverkey: { zh: '服务器还没有设置 OWNER_TOKEN（在 AI Studio 的 Secrets 里添加）', en: 'OWNER_TOKEN is not set on the server (add it in AI Studio Secrets)' },
+  owner_rate: { zh: '尝试次数太多了，10 分钟后再试', en: 'Too many attempts. Try again in 10 minutes.' },
+  owner_on: { zh: '站长模式已开启', en: 'Owner mode is on' },
+  owner_local: { zh: '没找到服务器（纯静态部署）：站长模式只在这台设备生效，AI 摆件不可用', en: 'No server found (static deploy): owner mode is local only and AI objects are unavailable' },
+  owner_status: { zh: '你现在是站长。上传、删除和整理记忆的按钮只有你能看到。', en: 'You are the owner. Only you can see the upload, delete and organise buttons.' },
+  owner_logout: { zh: '退出站长模式', en: 'Leave owner mode' },
+  owner_off: { zh: '已退出站长模式', en: 'Owner mode is off' },
+  up_ai_owner: { zh: '站长密钥失效了，请重新进入站长模式', en: 'the owner key is no longer valid; enter owner mode again' },
+  up_ai_noowner: { zh: '服务器还没有设置 OWNER_TOKEN', en: 'OWNER_TOKEN is not set on the server' },
+  up_ai_rate: { zh: '请求太频繁，过一会儿再试', en: 'too many requests, try again later' },
 
   // 物件名称（悬停标签 & 读屏）
   hot_window: { zh: '窗户：我的足迹', en: 'Window: places I\'ve been' },

@@ -5,7 +5,7 @@
   "background": "assets/bg/room-full.png",
   "focusX": 240,
   "embed": { "allowedOrigins": [] },
-  "ai": { "enabled": true, "endpoint": "/api/analyze-photo" },
+  "ai": { "enabled": true, "endpoint": "/api/analyze-photo", "ownerCheck": "/api/owner-check" },
 
   "avatar": {
     "openR": { "src": "assets/avatar/eye_open_r.png", "x": 250, "y": 130 },

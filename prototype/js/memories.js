@@ -166,7 +166,7 @@ export function makeAISprite(grid, keyColors = []) {
 }
 
 /** 调用后端 /api/analyze-photo（AI Studio 版 server.ts）。照片先压到 768px 以内。 */
-async function analyzePhoto(endpoint, img, hints) {
+async function analyzePhoto(endpoint, img, hints, ownerToken) {
   const scale = Math.min(1, 768 / Math.max(img.naturalWidth, img.naturalHeight));
   const c = document.createElement('canvas');
   c.width = Math.round(img.naturalWidth * scale);
@@ -178,7 +178,7 @@ async function analyzePhoto(endpoint, img, hints) {
   try {
     const r = await fetch(endpoint, {
       method: 'POST',
-      headers: { 'Content-Type': 'application/json' },
+      headers: { 'Content-Type': 'application/json', 'x-owner-token': ownerToken || '' },
       body: JSON.stringify({ imageBase64, mimeType: 'image/jpeg', ...hints }),
       signal: ctrl.signal,
     });
@@ -212,7 +212,7 @@ function store(db, mode, fn) {
 
 // ---------------- 主类 ----------------
 export class Memories {
-  constructor({ room, ui, scene, content, layer, reduced, onSelect }) {
+  constructor({ room, ui, scene, content, layer, reduced, onSelect, owner }) {
     this.room = room;
     this.ui = ui;
     this.scene = scene;
@@ -220,6 +220,7 @@ export class Memories {
     this.layer = layer;
     this.reduced = reduced;
     this.onSelect = onSelect;
+    this.owner = owner || { isOwner: () => false, token: () => '' };
     this.items = [];
     this.buttons = new Map();
     this.db = null;
@@ -403,10 +404,12 @@ export class Memories {
     const meta = [m.date, t(m.place)].filter(Boolean).join(' · ');
     const tags = (m.tags || []).filter(Boolean);
     const actions = el('div', { class: 'row wrap mem-actions' });
-    if (!m.seed) {
+    if (this.owner.isOwner() && !m.seed) {
       actions.append(el('button', { class: 'px-btn small ghost', type: 'button', onclick: () => this.toggleRoom(m) }, m.slot ? s('memHide') : s('up_save')));
     }
-    actions.append(el('button', { class: 'px-btn small danger', type: 'button', onclick: () => this.remove(m) }, s('memDelete')));
+    if (this.owner.isOwner()) {
+      actions.append(el('button', { class: 'px-btn small danger', type: 'button', onclick: () => this.remove(m) }, s('memDelete')));
+    }
 
     const body = el('div', { class: 'mem-card' },
       el('figure', { class: 'polaroid' }, wrap, el('figcaption', {}, t(m.title))),
@@ -509,13 +512,16 @@ export class Memories {
     this.ui.openPanel({
       id: 'album',
       title: s('p_album'),
-      body: el('div', {}, grid, el('div', { class: 'row' }, el('button', { class: 'px-btn', type: 'button', onclick: () => this.uploadPanel() }, s('hudUpload')))),
+      body: el('div', {}, grid, this.owner.isOwner()
+        ? el('div', { class: 'row' }, el('button', { class: 'px-btn', type: 'button', onclick: () => this.uploadPanel() }, s('hudUpload')))
+        : null),
       wide: true,
     });
   }
 
   // ---------------- 上传 ----------------
   uploadPanel() {
+    if (!this.owner.isOwner()) return;
     let img = null;
     let kind = 'polaroid';
     let aiResult = null;
@@ -593,7 +599,7 @@ export class Memories {
       aiStatus.textContent = s('up_ai_loading');
       choiceA.classList.add('loading');
       try {
-        const res = await analyzePhoto(aiEndpoint, img, { title: title.value, story: story.value, place: place.value });
+        const res = await analyzePhoto(aiEndpoint, img, { title: title.value, story: story.value, place: place.value }, this.owner.token());
         const sprite = makeAISprite(res.custom_pixel_grid, res.key_colors);
         if (!sprite) throw new Error(s('up_ai_bad'));
         aiResult = res;
@@ -611,7 +617,10 @@ export class Memories {
         sfx.sparkle();
       } catch (e2) {
         const msg = String((e2 && e2.message) || e2);
-        const reason = /GEMINI_API_KEY/.test(msg) ? s('up_ai_nokey')
+        const reason = /OWNER_TOKEN is not configured/.test(msg) ? s('up_ai_noowner')
+          : /Owner token|HTTP 401/.test(msg) ? s('up_ai_owner')
+          : /Too many requests|HTTP 429/.test(msg) ? s('up_ai_rate')
+          : /GEMINI_API_KEY/.test(msg) ? s('up_ai_nokey')
           : /HTTP 404|HTTP 405|HTTP 501|Failed to fetch|NetworkError|Unexpected token/.test(msg) ? s('up_ai_static')
             : msg.slice(0, 80);
         aiStatus.textContent = s('up_ai_failed', { reason });

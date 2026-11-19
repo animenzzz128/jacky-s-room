@@ -36,6 +36,19 @@ npm run dev
 
 在 AI Studio 里运行时，API key 由 AI Studio 自动注入。
 
+## 站长模式（上传照片只给自己用）
+
+访客看不到「＋照片」，也调用不了 AI 接口（不会用掉你的 Gemini 额度）。
+
+1. 生成一个足够长的随机密钥：
+   ```bash
+   node -e "console.log(require('crypto').randomBytes(24).toString('base64url'))"
+   ```
+2. 把它设成服务器的环境变量 `OWNER_TOKEN`：AI Studio 里在 **Secrets** 面板添加；本地写进 `.env`。没设置时 AI 接口一律关闭。
+3. 用 `你的网址/?owner` 打开网站，输入密钥，就进入站长模式（顶栏出现「站长 ✓」，点它可以退出）。密钥只存在这台设备的浏览器里，不会出现在网址里。
+
+服务器还对 `/api` 做了限流：每个 IP 每 10 分钟最多 30 次请求。
+
 ## 部署注意
 
 - 纯静态部署（GitHub Pages 等）也能用，只是没有 AI 摆件；如果想彻底隐藏这个选项，把 `prototype/data/scene.json` 里的 `ai.enabled` 改成 `false`
