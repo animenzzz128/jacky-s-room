@@ -174,7 +174,7 @@ export function createPanels(ctx) {
       el('h4', {}, t(g.name)),
       el('ul', {}, g.items.map((it) => el('li', {},
         el('span', {}, it.name),
-        el('span', { class: 'meter', role: 'img', 'aria-label': `${it.level} / 5` }, [1, 2, 3, 4, 5].map((k) => el('i', { class: k <= it.level ? 'on' : '' }))),
+        it.level ? el('span', { class: 'meter', role: 'img', 'aria-label': `${it.level} / 5` }, [1, 2, 3, 4, 5].map((k) => el('i', { class: k <= it.level ? 'on' : '' }))) : null,
       ))),
     )));
   }

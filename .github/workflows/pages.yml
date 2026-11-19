@@ -1,0 +1,43 @@
+name: Deploy to GitHub Pages
+
+# Publishes prototype/ as a static site. GitHub Pages has no server, so the
+# Gemini "AI object" option is switched off in the published copy only;
+# the repo keeps ai.enabled = true for the Node server (server.ts).
+on:
+  push:
+    branches: [main]
+  workflow_dispatch:
+
+permissions:
+  contents: read
+  pages: write
+  id-token: write
+
+concurrency:
+  group: pages
+  cancel-in-progress: true
+
+jobs:
+  build:
+    runs-on: ubuntu-latest
+    timeout-minutes: 5
+    steps:
+      - uses: actions/checkout@v4
+      - name: Copy the static site and turn off the server-only AI option
+        run: |
+          mkdir _site
+          cp -r prototype/. _site/
+          node -e "const f='_site/data/scene.json';const fs=require('fs');const s=JSON.parse(fs.readFileSync(f,'utf8'));s.ai.enabled=false;fs.writeFileSync(f,JSON.stringify(s,null,2))"
+      - uses: actions/upload-pages-artifact@v3
+        with:
+          path: _site
+
+  deploy:
+    needs: build
+    runs-on: ubuntu-latest
+    environment:
+      name: github-pages
+      url: ${{ steps.deployment.outputs.page_url }}
+    steps:
+      - id: deployment
+        uses: actions/deploy-pages@v4
