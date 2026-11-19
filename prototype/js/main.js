@@ -85,8 +85,15 @@ async function boot() {
     if (window.parent !== window) window.parent.postMessage({ source: 'pixel-room', ...msg }, '*');
   };
 
+  // ---------------- 站长模式 ----------------
+  const OWNER_KEY = 'room.ownerToken';
+  const owner = {
+    token: () => localStorage.getItem(OWNER_KEY) || '',
+    isOwner: () => !!localStorage.getItem(OWNER_KEY),
+  };
+
   const memories = new Memories({
-    room, ui, scene, content, layer, reduced,
+    room, ui, scene, content, layer, reduced, owner,
     onSelect: (m) => {
       firstInteraction();
       setUrl({ memory: m.id });
@@ -221,6 +228,73 @@ async function boot() {
   hudBtn('quick').addEventListener('click', () => panels.open('quick', { returnFocus: hudBtn('quick') }));
   hudBtn('album').addEventListener('click', () => memories.album());
   hudBtn('upload').addEventListener('click', () => memories.uploadPanel());
+  hudBtn('owner').addEventListener('click', () => ownerPanel());
+
+  const applyOwner = () => {
+    root.classList.toggle('is-owner', owner.isOwner());
+    memories.render();
+  };
+
+  function ownerPanel() {
+    if (owner.isOwner()) {
+      ui.openPanel({
+        id: 'owner',
+        title: s('p_owner'),
+        body: el('div', {},
+          el('p', {}, s('owner_status')),
+          el('div', { class: 'row end' }, el('button', {
+            class: 'px-btn ghost', type: 'button',
+            onclick: () => {
+              localStorage.removeItem(OWNER_KEY);
+              ui.closePanel();
+              applyOwner();
+              ui.toast(s('owner_off'));
+            },
+          }, s('owner_logout'))),
+        ),
+        returnFocus: hudBtn('owner'),
+      });
+      return;
+    }
+    const input = el('input', { type: 'password', autocomplete: 'current-password', spellcheck: 'false' });
+    const err = el('p', { class: 'error', role: 'alert' });
+    const submit = el('button', { class: 'px-btn', type: 'submit' }, s('owner_enter'));
+    const form = el('form', { class: 'owner-form' },
+      el('p', {}, s('owner_intro')),
+      el('label', { class: 'field' }, el('span', {}, s('owner_key')), input),
+      err,
+      el('div', { class: 'row end' }, submit),
+    );
+    const enable = (msg) => {
+      localStorage.setItem(OWNER_KEY, input.value.trim());
+      ui.closePanel();
+      applyOwner();
+      ui.toast(msg);
+    };
+    form.addEventListener('submit', async (e) => {
+      e.preventDefault();
+      const tok = input.value.trim();
+      if (!tok) return;
+      submit.disabled = true;
+      err.textContent = '';
+      try {
+        const r = await fetch((scene.ai && scene.ai.ownerCheck) || '/api/owner-check', {
+          method: 'POST',
+          headers: { 'x-owner-token': tok },
+        });
+        if (r.ok) enable(s('owner_on'));
+        else if (r.status === 401) err.textContent = s('owner_wrong');
+        else if (r.status === 503) err.textContent = s('owner_noserverkey');
+        else if (r.status === 429) err.textContent = s('owner_rate');
+        else enable(s('owner_local')); // 404 / 405 / 501：纯静态部署，没有服务器可以验证
+      } catch {
+        enable(s('owner_local'));
+      } finally {
+        submit.disabled = false;
+      }
+    });
+    ui.openPanel({ id: 'owner', title: s('p_owner'), body: form });
+  }
 
   function relabel() {
     const name = t(content.profile.name);
@@ -235,6 +309,7 @@ async function boot() {
     hudBtn('quick').textContent = s('hudQuick');
     hudBtn('album').textContent = s('hudAlbum');
     hudBtn('upload').textContent = s('hudUpload');
+    hudBtn('owner').textContent = s('hudOwner');
     layer.setAttribute('aria-label', s('roomLabel'));
     buttons.forEach((b, id) => b.setAttribute('aria-label', s(`hot_${id}`)));
     root.querySelector('#pan-hint').textContent = s('panHint');
@@ -268,6 +343,14 @@ async function boot() {
     setTimeout(() => { ph.hidden = true; }, 3200);
   }
 
+  root.classList.toggle('is-owner', owner.isOwner());
+  if (params.has('owner')) {
+    const url = new URL(location.href);
+    url.searchParams.delete('owner');
+    history.replaceState(null, '', url);
+    if (!owner.isOwner()) ownerPanel();
+  }
+
   // 深链接：?item=laptop / ?memory=id
   const item = params.get('item');
   const memId = params.get('memory');
@@ -276,7 +359,7 @@ async function boot() {
   else if (memId) {
     const m = memories.all().find((x) => x.id === memId);
     if (m) memories.open(m);
-  } else {
+  } else if (!params.has('owner')) {
     setTimeout(() => {
       room.winkHold = true;
       setTimeout(() => { room.winkHold = false; }, 900);

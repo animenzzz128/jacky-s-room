@@ -1,5 +1,7 @@
 import express from 'express';
+import type { NextFunction, Request, Response } from 'express';
 import dotenv from 'dotenv';
+import crypto from 'crypto';
 import path from 'path';
 import { fileURLToPath } from 'url';
 import { GoogleGenAI, ThinkingLevel, Type } from '@google/genai';
@@ -13,6 +15,59 @@ const app = express();
 const PORT = Number(process.env.PORT) || 3000;
 
 app.use(express.json({ limit: '12mb' }));
+app.set('trust proxy', true); // Cloud Run 前面有代理，用真实访客 IP 做限流
+
+// ---------------- 站长模式 ----------------
+// AI 接口会用到站长的 Gemini 额度，所以只有带正确站长密钥（请求头 x-owner-token）的请求才能调用。
+// 密钥放在环境变量 OWNER_TOKEN（AI Studio 的 Secrets 面板 / 本地 .env）。没设置时 AI 接口一律关闭。
+const OWNER_TOKEN = process.env.OWNER_TOKEN || '';
+
+function ownerTokenOk(given: unknown): boolean {
+  if (!OWNER_TOKEN || typeof given !== 'string' || !given) return false;
+  // 先做哈希再比较，长度固定，避免计时攻击
+  const a = crypto.createHash('sha256').update(given).digest();
+  const b = crypto.createHash('sha256').update(OWNER_TOKEN).digest();
+  return crypto.timingSafeEqual(a, b);
+}
+
+function requireOwner(req: Request, res: Response, next: NextFunction) {
+  if (!OWNER_TOKEN) {
+    return res.status(503).json({ error: 'OWNER_TOKEN is not configured on the server' });
+  }
+  if (!ownerTokenOk(req.get('x-owner-token'))) {
+    return res.status(401).json({ error: 'Owner token required' });
+  }
+  return next();
+}
+
+// 简单限流：每个 IP 每 10 分钟最多 30 次 /api 请求（也能挡住猜密钥）
+const RATE_LIMIT = 30;
+const RATE_WINDOW_MS = 10 * 60 * 1000;
+const hits = new Map<string, number[]>();
+
+function rateLimit(req: Request, res: Response, next: NextFunction) {
+  const now = Date.now();
+  const key = req.ip || 'unknown';
+  const recent = (hits.get(key) || []).filter((t) => now - t < RATE_WINDOW_MS);
+  if (recent.length >= RATE_LIMIT) {
+    return res.status(429).json({ error: 'Too many requests, please try again later' });
+  }
+  recent.push(now);
+  hits.set(key, recent);
+  if (hits.size > 5000) {
+    for (const [k, list] of hits) {
+      if (!list.some((t) => now - t < RATE_WINDOW_MS)) hits.delete(k);
+    }
+  }
+  return next();
+}
+
+app.use('/api', rateLimit);
+
+// 前端进入站长模式时用来验证密钥
+app.post('/api/owner-check', requireOwner, (_req, res) => {
+  res.json({ ok: true });
+});
 
 function getAiClient() {
   const apiKey = process.env.GEMINI_API_KEY;
@@ -44,7 +99,7 @@ const ARCHETYPES = [
   'game_cart',
 ] as const;
 
-app.post('/api/analyze-photo', async (req, res) => {
+app.post('/api/analyze-photo', requireOwner, async (req, res) => {
   try {
     const { imageBase64, mimeType, title, story, place } = req.body as {
       imageBase64?: string;
@@ -201,7 +256,7 @@ Rules:
   }
 });
 
-app.post('/api/translate', async (req, res) => {
+app.post('/api/translate', requireOwner, async (req, res) => {
   try {
     const { text, targetLang } = req.body as { text?: string; targetLang?: 'zh' | 'en' };
     if (!text || !targetLang) {
