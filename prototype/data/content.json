@@ -199,21 +199,5 @@
       { "label": "GitHub", "url": "https://github.com/" }
     ],
     "resume": ""
-  },
-
-  "seedMemories": [
-    {
-      "id": "pixel-room-origin",
-      "slotId": "S2",
-      "title": { "zh": "小屋诞生的那天", "en": "The day the room was born" },
-      "date": "2026-11",
-      "place": { "zh": "我的书桌", "en": "My desk" },
-      "story": {
-        "zh": "这是小屋的第一张插画，也是这个网站的起点。之后每上传一张照片，房间里就会多一个小摆件。【示例：把这段换成你自己的故事】",
-        "en": "The very first illustration of this room, and where this site began. Every photo I add becomes a new little object here. [Sample: replace with your story]"
-      },
-      "tags": ["小屋", "pixel"],
-      "photo": "assets/memories/pixel-room-origin.jpg"
-    }
-  ]
+  }
 }

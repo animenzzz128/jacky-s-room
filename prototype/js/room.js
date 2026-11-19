@@ -53,7 +53,6 @@ export class Room {
     this.hover = null; // 当前高亮的矩形 {x,y,w,h}
     this.hintsOn = false;
     this.memories = []; // [{slot, sprite(canvas), isNew}]
-    this.emptySlotsOn = false;
     this.lampTarget = true;
     this.lampStep = 0; // 0 = 开灯，4 = 完全关灯
     this.eyes = 'open';
@@ -401,21 +400,6 @@ export class Room {
         ctx.fillRect(sl.x + 5, sl.y - 1, 2, 1);
         ctx.fillStyle = CORAL;
         ctx.fillRect(sl.x + 5, sl.y, 2, 1);
-      }
-    }
-    if (this.emptySlotsOn) {
-      const used = new Set(this.memories.map((m) => m.slot.id));
-      ctx.fillStyle = AMBER;
-      for (const sl of scene.slots) {
-        if (used.has(sl.id)) continue;
-        for (let i = 0; i < 12; i += 2) {
-          ctx.fillRect(sl.x + i, sl.y, 1, 1);
-          ctx.fillRect(sl.x + i + 1, sl.y + 13, 1, 1);
-        }
-        for (let j = 0; j < 14; j += 2) {
-          ctx.fillRect(sl.x, sl.y + j + 1, 1, 1);
-          ctx.fillRect(sl.x + 11, sl.y + j, 1, 1);
-        }
       }
     }
 
