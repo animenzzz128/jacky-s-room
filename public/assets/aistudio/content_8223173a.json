@@ -1,0 +1,168 @@
+{
+  "_说明": "所有面板里的文字都在这里。带【示例】的是占位内容，换成你自己的就行。每一项都有 zh / en 两个版本。",
+
+  "profile": {
+    "name": { "zh": "Jacky", "en": "Jacky" },
+    "tagline": { "zh": "【示例】一句话介绍自己：学生 / 方向 / 正在做的事", "en": "[Sample] One line about you: student / focus / what you do" },
+    "intro": {
+      "zh": [
+        "【示例】这里写 2–3 句自我介绍：你是谁、在哪里读书或工作、最关心什么问题。",
+        "【示例】再写一句你做事的风格，或者你最近最有成就感的一件事。"
+      ],
+      "en": [
+        "[Sample] 2–3 sentences about who you are, where you study or work, and what you care about.",
+        "[Sample] One more line about how you work, or something you're proud of lately."
+      ]
+    },
+    "tags": {
+      "zh": ["【示例】身份 1", "【示例】方向 2", "【示例】爱好 3"],
+      "en": ["[Sample] Role", "[Sample] Focus", "[Sample] Hobby"]
+    },
+    "now": {
+      "zh": ["【示例】在读：一本书", "【示例】在做：一个项目", "【示例】在学：一项技能"],
+      "en": ["[Sample] Reading: a book", "[Sample] Building: a project", "[Sample] Learning: a skill"]
+    }
+  },
+
+  "bubble": {
+    "first": {
+      "zh": "嗨！我是 Jacky 👋 欢迎来我的像素小屋。点点房间里的东西，看看我的故事吧～",
+      "en": "Hi! I'm Jacky 👋 Welcome to my pixel room. Click around to find my stories~"
+    },
+    "again": {
+      "zh": "欢迎回来！今天想看点什么？",
+      "en": "Welcome back! What would you like to see today?"
+    }
+  },
+
+  "experience": [
+    {
+      "org": { "zh": "【示例】公司 A", "en": "[Sample] Company A" },
+      "role": { "zh": "【示例】产品实习生", "en": "[Sample] Product Intern" },
+      "period": "2025.06 – 2025.08",
+      "bullets": {
+        "zh": ["【示例】一条成果，最好带数字", "【示例】一条你负责的事", "【示例】一条你学到的东西"],
+        "en": ["[Sample] An outcome, ideally with a number", "[Sample] Something you owned", "[Sample] Something you learned"]
+      }
+    },
+    {
+      "org": { "zh": "【示例】实验室 / 社团 B", "en": "[Sample] Lab / Club B" },
+      "role": { "zh": "【示例】研究助理", "en": "[Sample] Research Assistant" },
+      "period": "2024.09 – 2025.05",
+      "bullets": {
+        "zh": ["【示例】一条成果", "【示例】一条你负责的事"],
+        "en": ["[Sample] An outcome", "[Sample] Something you owned"]
+      }
+    }
+  ],
+
+  "projects": [
+    {
+      "id": "pixel-room",
+      "name": { "zh": "像素小屋", "en": "Pixel Room" },
+      "oneLiner": { "zh": "你现在看到的这个互动主页。", "en": "The interactive homepage you're looking at." },
+      "role": { "zh": "构思、美术方向、内容", "en": "Concept, art direction, content" },
+      "stack": ["HTML", "Canvas", "Pixel Art"],
+      "link": ""
+    },
+    {
+      "id": "project-b",
+      "name": { "zh": "【示例】项目 B", "en": "[Sample] Project B" },
+      "oneLiner": { "zh": "【示例】一句话说明它解决了什么问题。", "en": "[Sample] One line on the problem it solves." },
+      "role": { "zh": "【示例】我负责的部分", "en": "[Sample] My part" },
+      "stack": ["Python", "React"],
+      "link": ""
+    },
+    {
+      "id": "project-c",
+      "name": { "zh": "【示例】项目 C", "en": "[Sample] Project C" },
+      "oneLiner": { "zh": "【示例】一句话说明它解决了什么问题。", "en": "[Sample] One line on the problem it solves." },
+      "role": { "zh": "【示例】我负责的部分", "en": "[Sample] My part" },
+      "stack": ["Figma", "Research"],
+      "link": ""
+    }
+  ],
+
+  "timeline": [
+    {
+      "period": "2018 – 2022",
+      "title": { "zh": "【示例】高中 / 本科", "en": "[Sample] High school / Undergrad" },
+      "org": { "zh": "【示例】学校名", "en": "[Sample] School" },
+      "text": { "zh": "【示例】这一阶段最重要的一件事。", "en": "[Sample] The most important thing from this chapter." }
+    },
+    {
+      "period": "2022 – 2026",
+      "title": { "zh": "【示例】本科 / 研究生", "en": "[Sample] Undergrad / Grad" },
+      "org": { "zh": "【示例】学校名 · 专业", "en": "[Sample] School · Major" },
+      "text": { "zh": "【示例】你学了什么、做了什么、改变了什么。", "en": "[Sample] What you studied, built, or changed." }
+    },
+    {
+      "period": "2026 –",
+      "title": { "zh": "【示例】下一站", "en": "[Sample] Next chapter" },
+      "org": { "zh": "【示例】正在找的方向", "en": "[Sample] What you're looking for" },
+      "text": { "zh": "【示例】你希望下一份工作 / 下一段经历是什么样的。", "en": "[Sample] What you want next." }
+    }
+  ],
+
+  "skills": [
+    {
+      "name": { "zh": "【示例】编程", "en": "[Sample] Coding" },
+      "items": [ { "name": "Python", "level": 4 }, { "name": "JavaScript", "level": 3 }, { "name": "SQL", "level": 3 } ]
+    },
+    {
+      "name": { "zh": "【示例】设计", "en": "[Sample] Design" },
+      "items": [ { "name": "Figma", "level": 4 }, { "name": "Pixel Art", "level": 2 } ]
+    },
+    {
+      "name": { "zh": "【示例】语言", "en": "[Sample] Languages" },
+      "items": [ { "name": "中文", "level": 5 }, { "name": "English", "level": 5 } ]
+    }
+  ],
+
+  "music": [
+    { "song": "【示例】歌名 1", "artist": "【示例】歌手", "note": { "zh": "【示例】写代码时循环播放", "en": "[Sample] On repeat while coding" } },
+    { "song": "【示例】歌名 2", "artist": "【示例】歌手", "note": { "zh": "【示例】一句话评语", "en": "[Sample] One-line note" } },
+    { "song": "【示例】歌名 3", "artist": "【示例】歌手", "note": { "zh": "【示例】一句话评语", "en": "[Sample] One-line note" } }
+  ],
+
+  "places": [
+    { "name": { "zh": "【示例】家乡", "en": "[Sample] Hometown" }, "type": "lived", "text": { "zh": "【示例】一句话：这里给了你什么。", "en": "[Sample] What this place gave you." } },
+    { "name": { "zh": "【示例】现在住的城市", "en": "[Sample] Current city" }, "type": "lived", "text": { "zh": "【示例】一句话。", "en": "[Sample] One line." } },
+    { "name": { "zh": "【示例】最喜欢的旅行地", "en": "[Sample] Favorite trip" }, "type": "visited", "text": { "zh": "【示例】一句话。", "en": "[Sample] One line." } }
+  ],
+
+  "facts": {
+    "zh": ["【示例】冷知识 1：比如你每天喝几杯咖啡。", "【示例】冷知识 2：一个很少人知道的小习惯。", "【示例】冷知识 3：桌上那只青蛙的来历。", "【示例】冷知识 4：你最奇怪的技能。"],
+    "en": ["[Sample] Fun fact 1: how many coffees a day.", "[Sample] Fun fact 2: a little habit few people know.", "[Sample] Fun fact 3: where the frog plush came from.", "[Sample] Fun fact 4: your oddest skill."]
+  },
+
+  "frogSecret": {
+    "zh": "🐸 呱呱呱！你发现了隐藏台词：【示例】在这里写一句只有好奇的人才能看到的话。",
+    "en": "🐸 Ribbit! You found a secret line: [Sample] write something only curious visitors will see."
+  },
+
+  "contact": {
+    "email": "your.name@example.com",
+    "links": [
+      { "label": "LinkedIn", "url": "https://www.linkedin.com/" },
+      { "label": "GitHub", "url": "https://github.com/" }
+    ],
+    "resume": ""
+  },
+
+  "seedMemories": [
+    {
+      "id": "pixel-room-origin",
+      "slotId": "S2",
+      "title": { "zh": "小屋诞生的那天", "en": "The day the room was born" },
+      "date": "2026-11",
+      "place": { "zh": "我的书桌", "en": "My desk" },
+      "story": {
+        "zh": "这是小屋的第一张插画，也是这个网站的起点。之后每上传一张照片，房间里就会多一个小摆件。【示例：把这段换成你自己的故事】",
+        "en": "The very first illustration of this room, and where this site began. Every photo I add becomes a new little object here. [Sample: replace with your story]"
+      },
+      "tags": ["小屋", "pixel"],
+      "photo": "assets/memories/pixel-room-origin.jpg"
+    }
+  ]
+}
