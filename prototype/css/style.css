@@ -2,6 +2,9 @@
    - 像素字体 Fusion Pixel 12px，只用 12 的整数倍字号（12 / 24 / 36）保证清晰
    - --n：房间缩放倍数；--u：界面「一个像素」的大小（由 room.js 根据 --n 计算） */
 
+/* 备用字体：本地字体文件缺失时（比如上传到 AI Studio 时漏掉了 .woff2），从 CDN 按需加载同一款字体的简体中文分片 */
+@import url('https://cdn.jsdelivr.net/npm/@vp-tw/cjk-web-fonts-fusion-pixel-font@0.0.1/dist/12px/proportional/zh_hans/Fusion-Pixel-12px-Proportional-Simplified-Chinese.css');
+
 @font-face {
   font-family: 'FusionPixel';
   src: url('../assets/fonts/fusion-pixel-12px-zh_hans.woff2') format('woff2');
@@ -47,7 +50,7 @@ html, body {
 }
 
 body {
-  font-family: 'FusionPixel', 'Microsoft YaHei', 'PingFang SC', sans-serif;
+  font-family: 'FusionPixel', 'Fusion Pixel 12px Proportional Simplified Chinese', 'Microsoft YaHei', 'PingFang SC', sans-serif;
   font-size: var(--fs);
   line-height: 1.5;
   color: var(--apricot);
@@ -689,3 +692,37 @@ textarea { resize: vertical; }
 @media (prefers-reduced-motion: reduce) {
   * { transition: none !important; }
 }
+
+/* 通用卡片面板（书单、目标、荣誉、教育、此刻、在学、爱好） */
+.card-list { list-style: none; padding: 0; margin: 0; }
+.card-list .card h4 { margin: 0; }
+.card-list .card p { margin: 6px 0 0; }
+.card-list .meter { margin-top: 8px; }
+.card.done h4 { color: var(--oat); text-decoration: line-through; text-decoration-thickness: var(--u); }
+.check { color: var(--amber); }
+
+/* 上传：两种摆件样式 */
+.kinds { border: var(--u) solid var(--plum-600); padding: 10px 14px 12px; margin: 14px 0 0; }
+.kinds legend { font-size: var(--fs-s); color: var(--oat); padding: 0 6px; }
+.choices { display: flex; gap: 12px; flex-wrap: wrap; }
+.choice {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 6px;
+  min-width: 140px;
+  padding: 10px 12px;
+  background: var(--plum-800);
+  border: var(--u) solid var(--ink);
+  font-size: var(--fs-s);
+}
+.choice input { position: absolute; opacity: 0; pointer-events: none; }
+.choice.on { border-color: var(--amber); background: var(--plum-700); }
+.choice:focus-within { outline: var(--u) dashed var(--amber); outline-offset: var(--u); }
+.choice.disabled { opacity: 0.45; }
+.choice.loading .sprite-preview { animation: pulse-steps 0.9s steps(3) infinite; }
+@keyframes pulse-steps { 50% { opacity: 0.35; } }
+.ai-row { display: flex; align-items: center; gap: 10px; flex-wrap: wrap; margin-top: 10px; }
+.ai-status { flex: 1; min-width: 200px; }
+.consent { display: flex; gap: 8px; align-items: center; margin-top: 12px; color: var(--amber); }
+.consent input { width: 18px; height: 18px; accent-color: var(--amber); }

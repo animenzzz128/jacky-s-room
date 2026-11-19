@@ -70,7 +70,7 @@ Rules:
 - Choose recommended_zone from: "wall", "shelf", "sill", "cork", "desk".
 - Provide bilingual Chinese (zh) and English (en) title, brief poetic story (2 sentences max if user didn't provide one, or polished version of user's story), and accessible alt_text.
 - Also compute "style_adaptation" so the room subtly harmonizes with this photo's colors while staying inside a warm lo-fi dusk study aesthetic (plum/amber/sunset tones, never harsh neon cyan/green).
-- Also design a crisp 16x16 "custom_pixel_grid" (an array of exactly 16 strings, each 16 characters long) representing the recognizable pixel-art silhouette of the object/motif centered with at least 1px transparent padding and 1px dark outline! Use ONLY these single-character palette codes:
+- Also design a crisp 12-wide x 14-tall "custom_pixel_grid" (an array of exactly 14 strings, each exactly 12 characters long) representing the recognizable pixel-art silhouette of a small collectible object based on the archetype and motif (it will sit on a shelf in the room). Fill most of the grid, keep the object's bottom on the last row, and draw a 1px dark outline around the silhouette. Use ONLY these single-character palette codes:
   '.' = transparent
   'O' = #1C1215 (1px dark outline)
   'P' = primary photo color
