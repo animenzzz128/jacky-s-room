@@ -10,7 +10,7 @@ const __filename = fileURLToPath(import.meta.url);
 const __dirname = path.dirname(__filename);
 
 const app = express();
-const PORT = 3000;
+const PORT = Number(process.env.PORT) || 3000;
 
 app.use(express.json({ limit: '12mb' }));
 
@@ -201,143 +201,6 @@ Rules:
   }
 });
 
-app.post('/api/design-audit', async (req, res) => {
-  try {
-    const {
-      iteration = 1,
-      memoriesCount,
-      placedZones,
-      themeConfig,
-      recentFixesApplied = [],
-      hasCustomPhoto,
-    } = req.body as {
-      iteration?: number;
-      memoriesCount: number;
-      placedZones: Record<string, number>;
-      themeConfig: Record<string, unknown>;
-      recentFixesApplied?: string[];
-      hasCustomPhoto?: boolean;
-    };
-
-    const ai = getAiClient();
-    const systemInstruction = `You are a Principal UI/UX & Pixel-Art Art Director auditing an interactive 480x270 lo-fi pixel personal showcase website.
-Evaluate the current state rigorously from 0.0 to 10.0 across 5 weighted dimensions:
-1. pixelGridAndPalette (0-10): 1px grid fidelity, warm plum/amber dusk harmony, zero mixels.
-2. spatialBalance (0-10): visual distribution across wall, shelf, sill, corkboard, and desk without crowding; dynamic expansion when photos grow.
-3. typographyAndContrast (0-10): WCAG AA legibility (>=4.5:1), crisp bilingual display & body readability.
-4. interactiveAffordance (0-10): clear hover feedback, gaze tracking, accessible keyboard/mobile layout, zero clutter in HUD.
-5. adaptivePhotoSync (0-10): how well uploaded photos transform into pixel objects and harmonize room layout & lighting.
-
-IMPORTANT SCORING CALIBRATION:
-- Evaluate honestly based on the exact state telemetry provided!
-- Notice what fixes have already been applied in recentFixesApplied: ${JSON.stringify(recentFixesApplied)}.
-- If contrastBoost < 0.8 or hudCompact is false or zones are unevenly clustered (e.g. one zone has >=3 while others have 0) or memoriesCount >= 4 without expandedShelves, penalize appropriately (typically 7.8 to 9.1 on early iterations) and list the exact 3 highest-impact fixes from the allowed fixAction enum.
-- As concrete fixes from recentFixesApplied are applied (e.g., rebalance_slots, boost_contrast, refine_lamp_harmony, compact_hud, enable_expanded_shelves, apply_photo_accent), reflect genuine improvement in the corresponding dimensions. When all major structural & visual issues are resolved cleanly, overallScore can reach >= 9.5 and approved=true.`;
-
-    const response = await ai.models.generateContent({
-      model: 'gemini-4-hydrogen',
-      contents: `Audit Iteration #${iteration} state:
-- Total published memories: ${memoriesCount}
-- Zone placement counts: ${JSON.stringify(placedZones)}
-- Theme & layout config: ${JSON.stringify(themeConfig)}
-- Custom uploaded photo integrated: ${Boolean(hasCustomPhoto)}
-- Fixes already applied: ${JSON.stringify(recentFixesApplied)}
-
-Provide overallScore (0.0-10.0), 5 dimension scores, bilingual summary, and the Top 3 highest-impact issues with executable fixAction values.`,
-      config: {
-        systemInstruction,
-        thinkingConfig: { thinkingLevel: ThinkingLevel.LOW },
-        responseMimeType: 'application/json',
-        responseSchema: {
-          type: Type.OBJECT,
-          properties: {
-            overallScore: { type: Type.NUMBER },
-            dimensions: {
-              type: Type.OBJECT,
-              properties: {
-                pixelGridAndPalette: { type: Type.NUMBER },
-                spatialBalance: { type: Type.NUMBER },
-                typographyAndContrast: { type: Type.NUMBER },
-                interactiveAffordance: { type: Type.NUMBER },
-                adaptivePhotoSync: { type: Type.NUMBER },
-              },
-              required: [
-                'pixelGridAndPalette',
-                'spatialBalance',
-                'typographyAndContrast',
-                'interactiveAffordance',
-                'adaptivePhotoSync',
-              ],
-            },
-            summary: {
-              type: Type.OBJECT,
-              properties: {
-                zh: { type: Type.STRING },
-                en: { type: Type.STRING },
-              },
-              required: ['zh', 'en'],
-            },
-            top3Issues: {
-              type: Type.ARRAY,
-              items: {
-                type: Type.OBJECT,
-                properties: {
-                  id: { type: Type.STRING },
-                  severity: { type: Type.STRING, enum: ['high', 'medium', 'low'] },
-                  area: {
-                    type: Type.STRING,
-                    enum: ['layout', 'palette', 'typography', 'affordance', 'adaptation'],
-                  },
-                  title: {
-                    type: Type.OBJECT,
-                    properties: { zh: { type: Type.STRING }, en: { type: Type.STRING } },
-                    required: ['zh', 'en'],
-                  },
-                  diagnosis: {
-                    type: Type.OBJECT,
-                    properties: { zh: { type: Type.STRING }, en: { type: Type.STRING } },
-                    required: ['zh', 'en'],
-                  },
-                  fixAction: {
-                    type: Type.STRING,
-                    enum: [
-                      'rebalance_slots',
-                      'boost_contrast',
-                      'enable_expanded_shelves',
-                      'refine_lamp_harmony',
-                      'compact_hud',
-                      'apply_photo_accent',
-                    ],
-                  },
-                  fixLabel: {
-                    type: Type.OBJECT,
-                    properties: { zh: { type: Type.STRING }, en: { type: Type.STRING } },
-                    required: ['zh', 'en'],
-                  },
-                },
-                required: ['id', 'severity', 'area', 'title', 'diagnosis', 'fixAction', 'fixLabel'],
-              },
-            },
-            approved: { type: Type.BOOLEAN },
-          },
-          required: ['overallScore', 'dimensions', 'summary', 'top3Issues', 'approved'],
-        },
-      },
-    });
-
-    const parsed = JSON.parse((response.text ?? '{}').trim());
-    return res.json({
-      ...parsed,
-      iteration,
-      timestamp: new Date().toISOString(),
-    });
-  } catch (err: unknown) {
-    console.error('Error in /api/design-audit:', err);
-    const message = err instanceof Error ? err.message : 'Design audit failed';
-    return res.status(500).json({ error: message });
-  }
-});
-
 app.post('/api/translate', async (req, res) => {
   try {
     const { text, targetLang } = req.body as { text?: string; targetLang?: 'zh' | 'en' };
@@ -361,8 +224,8 @@ app.post('/api/translate', async (req, res) => {
 async function startServer() {
   const prototypeDir = path.resolve(__dirname, 'prototype');
 
+  // 网站本体：纯静态的 prototype/（不缓存，改完刷新就能看到）
   app.use(
-    '/',
     express.static(prototypeDir, {
       index: 'index.html',
       setHeaders: (res) => {
@@ -371,20 +234,11 @@ async function startServer() {
     }),
   );
 
-  if (process.env.NODE_ENV !== 'production') {
-    const { createServer: createViteServer } = await import('vite');
-    const vite = await createViteServer({
-      server: { middlewareMode: true },
-      appType: 'spa',
-    });
-    app.use(vite.middlewares);
-  } else {
-    const distPath = path.resolve(__dirname, 'dist');
-    app.use(express.static(distPath));
-    app.get('*', (_req, res) => {
-      res.sendFile(path.join(prototypeDir, 'index.html'));
-    });
-  }
+  // 其他 GET 路径都回到首页（深链接用的是 ?item=，这里只是兜底）
+  app.get('*', (req, res, next) => {
+    if (req.path.startsWith('/api/')) return next();
+    res.sendFile(path.join(prototypeDir, 'index.html'));
+  });
 
   app.listen(PORT, '0.0.0.0', () => {
     console.log(`Pixel Room server running on http://0.0.0.0:${PORT}`);
