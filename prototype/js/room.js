@@ -162,6 +162,22 @@ export class Room {
       }
       this.night.push(cv);
     }
+
+    // 天花板小彩灯：位置公式和 tools/draw_room.py 一致
+    const BULB = ['#fdb644', '#ea6949', '#fbcda6', '#f5994a'];
+    const Lt = scene.fx.lights;
+    this.bulbs = [];
+    if (Lt) {
+      let i = 0;
+      for (let a = 0; a + Lt.anchorStep <= W; a += Lt.anchorStep) {
+        const b = a + Lt.anchorStep;
+        for (let x = a + Lt.offset; x < b - 3; x += Lt.bulbStep) {
+          const y = Math.round(Lt.y + Lt.sag * Math.sin((Math.PI * (x - a)) / (b - a)));
+          this.bulbs.push({ x, y: y + 2, c: BULB[i % 4], glow: 0 });
+          i++;
+        }
+      }
+    }
   }
 
   // ---------- 布局：整数倍缩放；手机竖屏改为按高度缩放 + 左右拖动 ----------
@@ -170,9 +186,10 @@ export class Room {
     const vh = this.viewport.clientHeight;
     const { W, H } = this;
     let n = Math.floor(Math.min(vw / W, vh / H));
-    if (n < 3) {
+    if (vw < 760 && vh > vw) {
+      // 手机竖屏：按高度放大，房间最多约 2.6 屏宽，左右拖动
       const byH = Math.floor(vh / H);
-      const cap = Math.floor((2.0 * vw) / W); // 手机上房间最多约两屏宽
+      const cap = Math.floor((2.6 * vw) / W);
       n = Math.max(n, Math.min(byH, cap));
     }
     n = Math.max(1, n);
@@ -291,10 +308,15 @@ export class Room {
       const st = fx.steam;
       this.particles.push({ kind: 'steam', x: st.x + rand(0, st.w), y: st.y, vx: 0, vy: -0.3, life: 0, max: Math.round(rand(14, 24)), seed: Math.random() * 10 });
     }
-    // 背景音乐开着时，耳机冒音符
-    if (this.bgmOn && this.tickN % 18 === 0) {
-      const nt = fx.notes;
-      this.particles.push({ kind: 'note', x: nt.x + rand(-2, 4), y: nt.y, vx: 0.12, vy: -0.28, life: 0, max: 34, seed: Math.random() * 10 });
+    // 背景音乐开着时，耳机和唱片机轮流冒音符
+    if (this.bgmOn && this.tickN % 14 === 0) {
+      const src = fx.record && (this.tickN / 14) % 2 ? { x: fx.record.x, y: fx.record.y - 8 } : fx.notes;
+      this.particles.push({ kind: 'note', x: src.x + rand(-2, 4), y: src.y, vx: 0.12, vy: -0.28, life: 0, max: 34, seed: Math.random() * 10 });
+    }
+    // 小彩灯：随机一颗亮一下
+    for (const b of this.bulbs) if (b.glow > 0) b.glow--;
+    if (this.bulbs.length && Math.random() < 0.35) {
+      this.bulbs[Math.floor(Math.random() * this.bulbs.length)].glow = Math.round(rand(6, 16));
     }
     // 城市窗灯：随机亮起、熄灭
     this.twinkles = this.twinkles.filter((tw) => --tw.left > 0);
@@ -408,6 +430,23 @@ export class Room {
       ctx.globalAlpha = 1;
     }
 
+    // 小彩灯：关灯后全部亮起，平时随机闪
+    const night = this.lampStep / 4;
+    for (const b of this.bulbs) {
+      if (b.glow <= 0 && night === 0) continue;
+      ctx.fillStyle = `rgba(253,182,68,${(b.glow > 0 ? 0.22 : 0) + 0.18 * night})`;
+      ctx.fillRect(b.x - 1, b.y - 1, 4, 4);
+      ctx.fillStyle = b.glow > 0 ? '#fff1d6' : b.c;
+      ctx.fillRect(b.x, b.y, 2, 1);
+    }
+    // 唱片机：放音乐时唱片上的反光转圈
+    if (this.bgmOn && fx.record) {
+      const r = fx.record;
+      const ang = this.tickN * 0.7;
+      ctx.fillStyle = '#ccb49c';
+      ctx.fillRect(Math.round(r.x + Math.cos(ang) * r.rx * 0.7), Math.round(r.y + Math.sin(ang) * r.ry * 0.7), 2, 1);
+    }
+
     // 粒子
     for (const p of this.particles) {
       if (p.life < 0) continue;
@@ -472,8 +511,9 @@ export class Room {
     }
   }
 
-  /** 截取背景的一块（关于我面板里的头像用） */
+  /** 截取背景的一块（关于我面板里的头像用）；不传参数时用 scene.json 里的 avatar.portrait */
   crop(x, y, w, h) {
+    if (x === undefined) ({ x, y, w, h } = this.scene.avatar.portrait);
     const c = document.createElement('canvas');
     c.width = w;
     c.height = h;

@@ -3,6 +3,7 @@
 
   "profile": {
     "name": { "zh": "Jacky", "en": "Jacky" },
+    "timezone": "",
     "tagline": { "zh": "【示例】一句话介绍自己：学生 / 方向 / 正在做的事", "en": "[Sample] One line about you: student / focus / what you do" },
     "intro": {
       "zh": [
@@ -139,6 +140,56 @@
   "frogSecret": {
     "zh": "🐸 呱呱呱！你发现了隐藏台词：【示例】在这里写一句只有好奇的人才能看到的话。",
     "en": "🐸 Ribbit! You found a secret line: [Sample] write something only curious visitors will see."
+  },
+
+  "sections": {
+    "reading": {
+      "intro": { "zh": "书架上最近在读、读完觉得值得推荐的书。", "en": "What's on the shelf lately." },
+      "items": [
+        { "title": { "zh": "【示例】书名 1", "en": "[Sample] Book 1" }, "meta": { "zh": "作者", "en": "Author" }, "text": { "zh": "【示例】一句话读后感。", "en": "[Sample] One-line takeaway." } },
+        { "title": { "zh": "【示例】书名 2", "en": "[Sample] Book 2" }, "meta": { "zh": "作者", "en": "Author" }, "text": { "zh": "【示例】一句话读后感。", "en": "[Sample] One-line takeaway." } }
+      ]
+    },
+    "goals": {
+      "intro": { "zh": "贴在墙上的便利贴：今年想做的事。", "en": "Sticky notes on the wall: things I want to do this year." },
+      "items": [
+        { "title": { "zh": "【示例】做完像素小屋并上线", "en": "[Sample] Ship the pixel room" }, "done": false },
+        { "title": { "zh": "【示例】读完 12 本书", "en": "[Sample] Read 12 books" }, "done": false },
+        { "title": { "zh": "【示例】一件已经完成的事", "en": "[Sample] Something already done" }, "done": true }
+      ]
+    },
+    "awards": {
+      "items": [
+        { "title": { "zh": "【示例】奖项名称", "en": "[Sample] Award name" }, "meta": "2025", "text": { "zh": "【示例】颁发单位 · 一句话说明。", "en": "[Sample] Issuer · one line." } },
+        { "title": { "zh": "【示例】奖项名称", "en": "[Sample] Award name" }, "meta": "2024", "text": { "zh": "【示例】颁发单位 · 一句话说明。", "en": "[Sample] Issuer · one line." } }
+      ]
+    },
+    "education": {
+      "items": [
+        { "title": { "zh": "【示例】学校名", "en": "[Sample] School" }, "meta": "2022 – 2026", "text": { "zh": "【示例】专业 · 学位 · 一句话亮点（课程、成绩、社团）。", "en": "[Sample] Major · degree · one highlight." } }
+      ]
+    },
+    "now": {
+      "intro": { "zh": "挂历上这个月圈出来的事。", "en": "What's circled on the calendar this month." },
+      "items": [
+        { "title": { "zh": "【示例】在做：一个项目", "en": "[Sample] Building: a project" } },
+        { "title": { "zh": "【示例】在准备：一件事", "en": "[Sample] Preparing: something" } },
+        { "title": { "zh": "【示例】在期待：一件事", "en": "[Sample] Looking forward to: something" } }
+      ]
+    },
+    "learning": {
+      "intro": { "zh": "绿萝每长一片叶子，我就多学会一点。", "en": "One new leaf for every new thing learned." },
+      "items": [
+        { "title": { "zh": "【示例】在学的技能 1", "en": "[Sample] Skill 1" }, "progress": 3 },
+        { "title": { "zh": "【示例】在学的技能 2", "en": "[Sample] Skill 2" }, "progress": 1 }
+      ]
+    },
+    "hobbies": {
+      "items": [
+        { "title": { "zh": "【示例】爱好 1", "en": "[Sample] Hobby 1" }, "text": { "zh": "【示例】为什么喜欢 / 做到什么程度。", "en": "[Sample] Why you love it." } },
+        { "title": { "zh": "【示例】爱好 2", "en": "[Sample] Hobby 2" }, "text": { "zh": "【示例】为什么喜欢 / 做到什么程度。", "en": "[Sample] Why you love it." } }
+      ]
+    }
   },
 
   "contact": {

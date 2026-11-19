@@ -1,7 +1,7 @@
 // 入口：加载 → 搭房间 → 物件热区 → 顶栏 → 深链接 / 嵌入通信。
 
 import { initLang, getLang, setLang, s, t } from './i18n.js';
-import { initSound, soundOn, setSound, sfx, stopBgm } from './sound.js';
+import { initSound, soundOn, setSound, sfx, startBgm, stopBgm, bgmPlaying } from './sound.js';
 import { Room } from './room.js';
 import { UI, el } from './ui.js';
 import { createPanels } from './panels.js';
@@ -130,25 +130,45 @@ async function boot() {
       panels.open(h.panel, { returnFocus: buttons.get(id) });
       return;
     }
+    const anchor = h.anchor || { x: h.hitbox.x + h.hitbox.w / 2, y: h.hitbox.y };
     if (h.action === 'lamp') {
       lampOn = !lampOn;
       room.setLamp(lampOn);
       sfx.lamp();
-      ui.bubble('lamp', { anchor: { x: 24, y: 72 }, text: lampOn ? s('lampOn') : s('lampOff'), small: true, timeout: 1500, typewriter: false });
+      ui.bubble('lamp', { anchor, text: lampOn ? s('lampOn') : s('lampOff'), small: true, timeout: 1500, typewriter: false });
     } else if (h.action === 'frog') {
       room.jumpFrog();
       sfx.frog();
       frogCount++;
       if (frogCount >= 5) {
         frogCount = 0;
-        ui.bubble('frog', { anchor: { x: 224, y: 26 }, text: t(content.frogSecret), timeout: 7000 });
+        ui.bubble('frog', { anchor, text: t(content.frogSecret), timeout: 7000 });
       } else {
-        ui.bubble('frog', { anchor: { x: 224, y: 26 }, text: s('frogSay'), small: true, timeout: 1100, typewriter: false });
+        ui.bubble('frog', { anchor, text: s('frogSay'), small: true, timeout: 1100, typewriter: false });
       }
     } else if (h.action === 'cat') {
       room.burstHearts();
       sfx.purr();
-      ui.bubble('cat', { anchor: { x: 212, y: 110 }, text: s('catSay'), small: true, timeout: 1500, typewriter: false });
+      ui.bubble('cat', { anchor, text: s('catSay'), small: true, timeout: 1500, typewriter: false });
+    } else if (h.action === 'record') {
+      // 唱片机：直接开 / 关背景音乐
+      if (bgmPlaying()) {
+        stopBgm();
+        room.bgmOn = false;
+      } else {
+        if (!soundOn()) setSound(true);
+        startBgm();
+        room.bgmOn = true;
+      }
+      relabel();
+      ui.bubble('record', { anchor, text: room.bgmOn ? s('recordOn') : s('recordOff'), small: true, timeout: 1600, typewriter: false });
+    } else if (h.action === 'clock') {
+      const fmt = (tz) => new Intl.DateTimeFormat(getLang() === 'zh' ? 'zh-CN' : 'en-US', { hour: '2-digit', minute: '2-digit', hour12: false, ...(tz ? { timeZone: tz } : {}) }).format(new Date());
+      const tz = content.profile.timezone;
+      const text = tz ? s('clockBoth', { you: fmt(), me: fmt(tz) }) : s('clockYou', { you: fmt() });
+      ui.bubble('clock', { anchor, text, small: true, timeout: 2600, typewriter: false });
+    } else if (h.action === 'album') {
+      memories.album();
     }
     send({ type: 'room:open', item: id });
   }

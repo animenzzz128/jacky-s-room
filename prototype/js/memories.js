@@ -108,6 +108,88 @@ const loadImage = (src) => new Promise((resolve, reject) => {
   i.src = src;
 });
 
+// ---------------- AI 摆件：Gemini 返回的像素网格 → 12×14 精灵 ----------------
+const AI_W = 12;
+const AI_H = 14;
+const FIXED = {
+  O: [0x1c, 0x12, 0x15], W: [0xf8, 0xf0, 0xe6], G: [0xfb, 0xcd, 0xa6], M: [0x58, 0x2f, 0x44], D: [0x3d, 0x20, 0x2e],
+};
+
+/** 把模型给的网格整理成 12×14：去掉四周透明边，超出就居中裁切，不够就居中补透明 */
+export function normalizeGrid(grid) {
+  if (!Array.isArray(grid)) return null;
+  let rows = grid.filter((r) => typeof r === 'string').map((r) => r.replace(/[^.OWGMDPSA]/g, '.'));
+  if (!rows.length) return null;
+  const width = Math.max(...rows.map((r) => r.length));
+  rows = rows.map((r) => r.padEnd(width, '.'));
+  const filled = (r) => /[^.]/.test(r);
+  while (rows.length && !filled(rows[0])) rows.shift();
+  while (rows.length && !filled(rows[rows.length - 1])) rows.pop();
+  if (!rows.length) return null;
+  let left = Math.min(...rows.map((r) => (r.search(/[^.]/) < 0 ? width : r.search(/[^.]/))));
+  let right = Math.max(...rows.map((r) => r.length - 1 - [...r].reverse().join('').search(/[^.]/)));
+  rows = rows.map((r) => r.slice(left, right + 1));
+  const w = rows[0].length;
+  if (w > AI_W) rows = rows.map((r) => r.slice(Math.floor((w - AI_W) / 2), Math.floor((w - AI_W) / 2) + AI_W));
+  if (rows.length > AI_H) rows = rows.slice(rows.length - AI_H); // 保留底部（物件立在台面上）
+  const padL = Math.floor((AI_W - rows[0].length) / 2);
+  rows = rows.map((r) => ('.'.repeat(padL) + r).padEnd(AI_W, '.'));
+  while (rows.length < AI_H) rows.unshift('.'.repeat(AI_W)); // 不够高就从上面补，底部贴地
+  const ink = rows.join('').replace(/\./g, '').length;
+  return ink >= 18 ? rows : null; // 太空的结果当作失败
+}
+
+/** 网格 + 照片主色 → 画布。P/S/A 三个照片色先加暖再对齐到「主调色板 + 照片补充色」 */
+export function makeAISprite(grid, keyColors = []) {
+  const rows = normalizeGrid(grid);
+  if (!rows) return null;
+  const photo = ['P', 'S', 'A'].reduce((acc, k, i) => {
+    const h = (keyColors[i] || '#a45939').replace('#', '');
+    const r = parseInt(h.slice(0, 2), 16) || 0;
+    const g = parseInt(h.slice(2, 4), 16) || 0;
+    const b = parseInt(h.slice(4, 6), 16) || 0;
+    acc[k] = nearest(Math.min(255, r * 1.03 + 4), g, b * 0.94);
+    return acc;
+  }, {});
+  const colors = { ...FIXED, ...photo };
+  const c = document.createElement('canvas');
+  c.width = AI_W;
+  c.height = AI_H;
+  const x = c.getContext('2d');
+  rows.forEach((row, yy) => [...row].forEach((ch, xx) => {
+    const col = colors[ch];
+    if (!col) return;
+    x.fillStyle = `rgb(${col[0]},${col[1]},${col[2]})`;
+    x.fillRect(xx, yy, 1, 1);
+  }));
+  return c;
+}
+
+/** 调用后端 /api/analyze-photo（AI Studio 版 server.ts）。照片先压到 768px 以内。 */
+async function analyzePhoto(endpoint, img, hints) {
+  const scale = Math.min(1, 768 / Math.max(img.naturalWidth, img.naturalHeight));
+  const c = document.createElement('canvas');
+  c.width = Math.round(img.naturalWidth * scale);
+  c.height = Math.round(img.naturalHeight * scale);
+  c.getContext('2d').drawImage(img, 0, 0, c.width, c.height);
+  const imageBase64 = c.toDataURL('image/jpeg', 0.82).split(',')[1];
+  const ctrl = new AbortController();
+  const timer = setTimeout(() => ctrl.abort(), 60000);
+  try {
+    const r = await fetch(endpoint, {
+      method: 'POST',
+      headers: { 'Content-Type': 'application/json' },
+      body: JSON.stringify({ imageBase64, mimeType: 'image/jpeg', ...hints }),
+      signal: ctrl.signal,
+    });
+    const data = await r.json().catch(() => ({}));
+    if (!r.ok) throw new Error(data.error || `HTTP ${r.status}`);
+    return data;
+  } finally {
+    clearTimeout(timer);
+  }
+}
+
 // ---------------- IndexedDB ----------------
 function openDB() {
   return new Promise((resolve, reject) => {
@@ -196,7 +278,8 @@ export class Memories {
     await Promise.all(items.map(async (m) => {
       try {
         m.img = await loadImage(m.photoURL);
-        m.sprite = makePolaroid(m.img);
+        // 选了 AI 摆件就按保存的网格重画；网格无效时退回拍立得
+        m.sprite = (m.spriteKind === 'ai' && m.ai && makeAISprite(m.ai.grid, m.ai.colors)) || makePolaroid(m.img);
       } catch {
         m.img = null;
         m.sprite = null;
@@ -314,7 +397,7 @@ export class Memories {
   card(m, returnFocus) {
     const idx = this.items.indexOf(m);
     const canvas = el('canvas', { class: 'reveal', 'aria-hidden': 'true' });
-    const photo = el('img', { class: 'photo', src: m.photoURL, alt: t(m.title) });
+    const photo = el('img', { class: 'photo', src: m.photoURL, alt: t((m.ai && m.ai.alt) || m.title) });
     const wrap = el('div', { class: 'photo-wrap' }, photo, canvas);
     const story = el('p', { class: 'story' });
     const meta = [m.date, t(m.place)].filter(Boolean).join(' · ');
@@ -433,9 +516,13 @@ export class Memories {
 
   // ---------------- 上传 ----------------
   uploadPanel() {
-    let file = null;
     let img = null;
-    const preview = el('canvas', { class: 'sprite-preview', width: 12, height: 14, 'aria-label': s('up_preview'), role: 'img' });
+    let kind = 'polaroid';
+    let aiResult = null;
+    let autoTitle = '';
+    const aiCfg = this.scene.ai || {};
+    const aiEndpoint = aiCfg.enabled === false ? '' : aiCfg.endpoint || '/api/analyze-photo';
+
     const thumb = el('img', { class: 'thumb', alt: '', hidden: true });
     const input = el('input', { type: 'file', accept: 'image/*', id: 'up-file', class: 'sr-only' });
     const err = el('p', { class: 'error', role: 'alert' });
@@ -446,18 +533,53 @@ export class Memories {
     const story = el('textarea', { rows: 4, maxlength: 600 });
     const tags = el('input', { type: 'text', maxlength: 60 });
 
+    // 两种摆件：像素拍立得（本地生成）/ AI 摆件（Gemini）
+    const pv = () => el('canvas', { class: 'sprite-preview', width: 12, height: 14, 'aria-hidden': 'true' });
+    const pvPolaroid = pv();
+    const pvAI = pv();
+    const rPolaroid = el('input', { type: 'radio', name: 'kind', value: 'polaroid', checked: true });
+    const rAI = el('input', { type: 'radio', name: 'kind', value: 'ai', disabled: true });
+    const aiStatus = el('span', { class: 'muted small ai-status', 'aria-live': 'polite' }, aiEndpoint ? s('up_ai_idle') : s('up_ai_off'));
+    const aiBtn = el('button', { class: 'px-btn small', type: 'button', disabled: true }, '✨ ' + s('up_ai_make'));
+    const consent = el('input', { type: 'checkbox' });
+    const consentRow = el('label', { class: 'consent', hidden: true }, consent, el('span', {}, s('up_people')));
+    const choiceP = el('label', { class: 'choice on' }, rPolaroid, pvPolaroid, el('span', {}, s('up_kind_polaroid')));
+    const choiceA = el('label', { class: 'choice disabled' }, rAI, pvAI, el('span', {}, s('up_kind_ai')));
+    const pick = (k) => {
+      kind = k;
+      choiceP.classList.toggle('on', k === 'polaroid');
+      choiceA.classList.toggle('on', k === 'ai');
+      (k === 'ai' ? rAI : rPolaroid).checked = true;
+    };
+    rPolaroid.addEventListener('change', () => pick('polaroid'));
+    rAI.addEventListener('change', () => pick('ai'));
+    const draw = (canvas, sprite) => {
+      const g = canvas.getContext('2d');
+      g.clearRect(0, 0, 12, 14);
+      if (sprite) g.drawImage(sprite, 0, 0);
+    };
+
     input.addEventListener('change', async () => {
-      file = input.files && input.files[0];
+      const file = input.files && input.files[0];
       if (!file) return;
       const url = URL.createObjectURL(file);
       try {
         img = await loadImage(url);
-        const sp = makePolaroid(img);
-        preview.getContext('2d').clearRect(0, 0, 12, 14);
-        preview.getContext('2d').drawImage(sp, 0, 0);
+        draw(pvPolaroid, makePolaroid(img));
+        draw(pvAI, null);
+        aiResult = null;
+        rAI.disabled = true;
+        choiceA.classList.add('disabled');
+        consentRow.hidden = true;
+        pick('polaroid');
         thumb.src = url;
         thumb.hidden = false;
-        if (!title.value) title.value = file.name.replace(/\.[^.]+$/, '').slice(0, 40);
+        if (!title.value || title.value === autoTitle) {
+          autoTitle = file.name.replace(/\.[^.]+$/, '').slice(0, 40);
+          title.value = autoTitle;
+        }
+        aiBtn.disabled = !aiEndpoint;
+        aiStatus.textContent = aiEndpoint ? s('up_ai_idle') : s('up_ai_off');
         sfx.sparkle();
         err.textContent = '';
       } catch {
@@ -465,15 +587,55 @@ export class Memories {
       }
     });
 
+    aiBtn.addEventListener('click', async () => {
+      if (!img) return;
+      aiBtn.disabled = true;
+      aiStatus.textContent = s('up_ai_loading');
+      choiceA.classList.add('loading');
+      try {
+        const res = await analyzePhoto(aiEndpoint, img, { title: title.value, story: story.value, place: place.value });
+        const sprite = makeAISprite(res.custom_pixel_grid, res.key_colors);
+        if (!sprite) throw new Error(s('up_ai_bad'));
+        aiResult = res;
+        draw(pvAI, sprite);
+        rAI.disabled = false;
+        choiceA.classList.remove('disabled');
+        pick('ai');
+        aiStatus.textContent = s('up_ai_done', { motif: res.motif || res.archetype || '' });
+        if (!title.value || title.value === autoTitle) {
+          title.value = t(res.suggested_title).slice(0, 40);
+          autoTitle = title.value;
+        }
+        if (!story.value.trim() && res.suggested_story) story.value = t(res.suggested_story);
+        consentRow.hidden = !res.has_people;
+        sfx.sparkle();
+      } catch (e2) {
+        const msg = String((e2 && e2.message) || e2);
+        const reason = /GEMINI_API_KEY/.test(msg) ? s('up_ai_nokey')
+          : /HTTP 404|HTTP 405|HTTP 501|Failed to fetch|NetworkError|Unexpected token/.test(msg) ? s('up_ai_static')
+            : msg.slice(0, 80);
+        aiStatus.textContent = s('up_ai_failed', { reason });
+      } finally {
+        choiceA.classList.remove('loading');
+        aiBtn.disabled = !aiEndpoint;
+      }
+    });
+
     const form = el('form', { class: 'upload', novalidate: true },
       el('div', { class: 'upload-top' },
         el('label', { class: 'drop', for: 'up-file' }, input, el('span', { class: 'px-btn' }, s('up_photo')), thumb),
-        el('div', { class: 'preview-box' }, preview, el('span', { class: 'muted small' }, s('up_preview'))),
+      ),
+      el('fieldset', { class: 'kinds' },
+        el('legend', {}, s('up_preview')),
+        el('div', { class: 'choices' }, choiceP, choiceA),
+        el('div', { class: 'ai-row' }, aiBtn, aiStatus),
+        aiEndpoint ? el('p', { class: 'muted small' }, s('up_ai_note')) : null,
       ),
       field('up_title', title),
       el('div', { class: 'row two' }, field('up_date', date), field('up_place', place)),
       field('up_story', story),
       field('up_tags', tags),
+      consentRow,
       err,
       el('p', { class: 'muted small' }, s('memNote')),
       el('div', { class: 'row end' },
@@ -491,6 +653,11 @@ export class Memories {
       if (!title.value.trim()) {
         err.textContent = s('up_needTitle');
         title.focus();
+        return;
+      }
+      if (aiResult && aiResult.has_people && !consent.checked) {
+        err.textContent = s('up_people_need');
+        consent.focus();
         return;
       }
       // 重新编码：去掉 EXIF（包括 GPS 定位），并压到 1600px 以内
@@ -511,6 +678,14 @@ export class Memories {
         photo: blob,
         slotId: free ? free.id : null,
         createdAt: Date.now(),
+        spriteKind: kind,
+        ai: aiResult ? {
+          grid: aiResult.custom_pixel_grid,
+          colors: aiResult.key_colors,
+          archetype: aiResult.archetype,
+          motif: aiResult.motif,
+          alt: aiResult.alt_text,
+        } : null,
       };
       await this.putUpload(rec);
       this.ui.closePanel({ keepFocus: true });

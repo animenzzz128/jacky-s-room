@@ -28,7 +28,7 @@ function iconCanvas(name) {
 
 const chips = (list) => el('ul', { class: 'chips' }, list.map((x) => el('li', {}, x)));
 
-export const PANEL_ORDER = ['about', 'os', 'timeline', 'skills', 'music', 'places', 'facts'];
+export const PANEL_ORDER = ['about', 'os', 'timeline', 'education', 'awards', 'skills', 'learning', 'goals', 'reading', 'music', 'hobbies', 'places', 'now', 'facts'];
 
 export function createPanels(ctx) {
   const { ui, room, content, memories, hotspotButton, openHotspot } = ctx;
@@ -47,7 +47,7 @@ export function createPanels(ctx) {
 
   // ---------------- 关于我 ----------------
   function about() {
-    const portrait = room.crop(90, 14, 86, 74);
+    const portrait = room.crop();
     portrait.className = 'portrait';
     portrait.setAttribute('role', 'img');
     portrait.setAttribute('aria-label', t(c.profile.name));
@@ -263,6 +263,11 @@ export function createPanels(ctx) {
       sec(s('q_projects'), c.projects.map((p) => el('div', { class: 'q-item' }, el('b', {}, t(p.name)), el('p', {}, t(p.oneLiner))))),
       sec(s('q_timeline'), c.timeline.map((e) => el('div', { class: 'q-item' }, el('b', {}, `${e.period}  ${t(e.title)}`), el('p', {}, `${t(e.org)} — ${t(e.text)}`)))),
       sec(s('q_skills'), c.skills.map((g) => el('p', {}, el('b', {}, `${t(g.name)}：`), g.items.map((i) => i.name).join(' / ')))),
+      sectionIds.map((sid) => {
+        const data = c.sections && c.sections[sid];
+        if (!data || !data.items.length) return null;
+        return sec(s(`p_${sid}`), el('ul', { class: 'px-list' }, data.items.map((it) => el('li', {}, [t(it.title), it.meta ? ` · ${t(it.meta)}` : '', it.text ? ` — ${t(it.text)}` : ''].join('')))));
+      }),
       sec(s('q_memories'), memories.all().length ? el('ul', { class: 'px-list' }, memories.all().map((m) => el('li', {}, `${t(m.title)} · ${m.date || ''}`))) : el('p', { class: 'muted' }, s('memEmpty'))),
       sec(s('p_contact'), contactBody()),
     );
@@ -283,7 +288,24 @@ export function createPanels(ctx) {
     );
   }
 
+  // ---------------- 通用卡片面板（书单、目标、荣誉、教育、此刻、在学、爱好） ----------------
+  // 内容在 content.json 的 sections.<id>.items：{ title, meta, text, done, progress }
+  function cards(id) {
+    const sec = (c.sections && c.sections[id]) || { items: [] };
+    const intro = sec.intro ? el('p', { class: 'muted' }, t(sec.intro)) : null;
+    return el('div', { class: `cards cards-${id}` }, intro, el('ul', { class: 'card-list' }, sec.items.map((it) => el('li', { class: `card${it.done ? ' done' : ''}` },
+      el('div', { class: 'card-head' },
+        el('h4', {}, it.done !== undefined ? el('span', { class: 'check', 'aria-hidden': 'true' }, it.done ? '☑ ' : '☐ ') : null, t(it.title)),
+        it.meta ? el('span', { class: 'muted' }, t(it.meta)) : null,
+      ),
+      it.text ? el('p', {}, t(it.text)) : null,
+      it.progress ? el('span', { class: 'meter', role: 'img', 'aria-label': `${it.progress} / 5` }, [1, 2, 3, 4, 5].map((k) => el('i', { class: k <= it.progress ? 'on' : '' }))) : null,
+    ))));
+  }
+  const sectionIds = ['reading', 'goals', 'awards', 'education', 'now', 'learning', 'hobbies'];
+
   const builders = { about, os, timeline, skills, music, places, facts, contact: contactBody, quick, list };
+  sectionIds.forEach((sid) => { builders[sid] = () => cards(sid); });
 
   function open(id, { returnFocus } = {}) {
     const build = builders[id];
