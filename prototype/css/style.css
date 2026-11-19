@@ -309,6 +309,8 @@ button, a, label[for], .hot { cursor: url('../assets/ui/cursor-hand.png') 8 0, p
   inset: 0;
   z-index: 20;
   display: grid;
+  /* One row capped at the viewport, so a tall panel scrolls inside instead of growing past the screen. */
+  grid-template-rows: minmax(0, 1fr);
   place-items: center;
   padding: 16px;
 }
@@ -344,6 +346,7 @@ button, a, label[for], .hot { cursor: url('../assets/ui/cursor-hand.png') 8 0, p
 .panel-tools .font-toggle { font-size: var(--fs-s); }
 .panel-body {
   overflow: auto;
+  min-height: 0;
   padding: 16px 22px 20px;
   margin: 0 calc(var(--u) * 3);
   scrollbar-color: var(--amber) var(--plum-800);
