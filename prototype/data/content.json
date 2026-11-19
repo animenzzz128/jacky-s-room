@@ -1,30 +1,50 @@
 {
-  "_说明": "所有面板里的文字都在这里。带【示例】的是占位内容，换成你自己的就行。每一项都有 zh / en 两个版本。",
-
+  "_说明": "所有面板里的文字都在这里，每一项都有 zh / en 两个版本。面板里关于我的事实取自个人网站 animenzzz128.github.io 已公开的内容；其中 Level 0、毕业去哪儿（Grad Trip）、像素小屋（Jacky's Room）三条与 2026-11-18 上线的网站一致；欢迎语、彩蛋（青蛙台词）和面板引导语是小屋自写的界面文字，不来自网站。书单、目标、荣誉、在学、冷知识还没有内容，对应物件暂时放在 scene.json 的 _hiddenHotspots 里，填好后移回 hotspots 即可。",
   "profile": {
-    "name": { "zh": "Jacky", "en": "Jacky" },
-    "timezone": "",
-    "tagline": { "zh": "【示例】一句话介绍自己：学生 / 方向 / 正在做的事", "en": "[Sample] One line about you: student / focus / what you do" },
+    "name": {
+      "zh": "Jacky",
+      "en": "Jacky"
+    },
+    "timezone": "America/New_York",
+    "tagline": {
+      "zh": "耶鲁管理学院在读 · 产品、策略与运营",
+      "en": "Yale SOM · product, strategy and operations"
+    },
     "intro": {
       "zh": [
-        "【示例】这里写 2–3 句自我介绍：你是谁、在哪里读书或工作、最关心什么问题。",
-        "【示例】再写一句你做事的风格，或者你最近最有成就感的一件事。"
+        "我习惯先想清楚“错了代价是什么”。我的背景横跨经济学、咨询、策略和运营。",
+        "无论是做市场分析、推进大促，还是用 AI 做产品，我的方式都一样：尽快推到决策，把背后的证据摆出来，并坦白说明哪些地方还不确定。"
       ],
       "en": [
-        "[Sample] 2–3 sentences about who you are, where you study or work, and what you care about.",
-        "[Sample] One more line about how you work, or something you're proud of lately."
+        "I start by asking what being wrong would cost. My background spans economics, consulting, strategy and operations.",
+        "Whether it is market analysis, a sales campaign or an AI product, I work the same way: get to a decision fast, show the evidence behind it, and say plainly what is still uncertain."
       ]
     },
     "tags": {
-      "zh": ["【示例】身份 1", "【示例】方向 2", "【示例】爱好 3"],
-      "en": ["[Sample] Role", "[Sample] Focus", "[Sample] Hobby"]
+      "zh": [
+        "产品",
+        "策略与运营",
+        "AI 产品与游戏"
+      ],
+      "en": [
+        "Product",
+        "Strategy & operations",
+        "AI products & games"
+      ]
     },
     "now": {
-      "zh": ["【示例】在读：一本书", "【示例】在做：一个项目", "【示例】在学：一项技能"],
-      "en": ["[Sample] Reading: a book", "[Sample] Building: a project", "[Sample] Learning: a skill"]
+      "zh": [
+        "2027 年 6 月从耶鲁管理学院毕业",
+        "正在寻找全职机会（北美与国内均可）",
+        "在做：个人项目和网页游戏，见个人网站"
+      ],
+      "en": [
+        "Graduating from Yale SOM in June 2027",
+        "Open to full-time roles in North America and China",
+        "Building personal projects and browser games (see my website)"
+      ]
     }
   },
-
   "bubble": {
     "first": {
       "zh": "嗨！我是 Jacky 👋 欢迎来我的像素小屋。点点房间里的东西，看看我的故事吧～",
@@ -35,169 +55,534 @@
       "en": "Welcome back! What would you like to see today?"
     }
   },
-
   "experience": [
     {
-      "org": { "zh": "【示例】公司 A", "en": "[Sample] Company A" },
-      "role": { "zh": "【示例】产品实习生", "en": "[Sample] Product Intern" },
-      "period": "2025.06 – 2025.08",
+      "org": {
+        "zh": "字节跳动（TikTok Shop）· 上海",
+        "en": "ByteDance (TikTok Shop) · Shanghai"
+      },
+      "role": {
+        "zh": "战略运营实习生",
+        "en": "Strategy Operations Intern"
+      },
+      "period": "2025.05 – 2025.08",
       "bullets": {
-        "zh": ["【示例】一条成果，最好带数字", "【示例】一条你负责的事", "【示例】一条你学到的东西"],
-        "en": ["[Sample] An outcome, ideally with a number", "[Sample] Something you owned", "[Sample] Something you learned"]
+        "zh": [
+          "为 MBP（商业化资源包）自动化搭建数据分析与商业论证，助力东南亚 MBP GMV 渗透率提升 1.5 个百分点",
+          "从零搭建并维护 50 余份 Excel 看板，分析累计约 20 万条商家、达人、商品及活动数据点",
+          "在东南亚六国累计筛选 5,000 余名商家与达人"
+        ],
+        "en": [
+          "Built the analytics and business case for automating MBP (Monetized Business Packages), contributing to a +1.5pp MBP GMV penetration gain in Southeast Asia",
+          "Built and maintained 50+ Excel dashboards over about 200K seller, creator, product and campaign data points",
+          "Screened 5,000+ sellers and creators across six Southeast Asian markets"
+        ]
       }
     },
     {
-      "org": { "zh": "【示例】实验室 / 社团 B", "en": "[Sample] Lab / Club B" },
-      "role": { "zh": "【示例】研究助理", "en": "[Sample] Research Assistant" },
-      "period": "2024.09 – 2025.05",
+      "org": {
+        "zh": "德勤咨询 · 北京",
+        "en": "Deloitte Consulting · Beijing"
+      },
+      "role": {
+        "zh": "咨询分析师实习生",
+        "en": "Consulting Analyst Intern"
+      },
+      "period": "2024.05 – 2024.07",
       "bullets": {
-        "zh": ["【示例】一条成果", "【示例】一条你负责的事"],
-        "en": ["[Sample] An outcome", "[Sample] Something you owned"]
+        "zh": [
+          "完成 6 份可视化报告，用 Axure 支持 30 余页数字零售平台原型设计",
+          "用 Python、Tableau 清洗并分析 1.8 万余条零售数据，支持建材客户两年期业务展望"
+        ],
+        "en": [
+          "Delivered 6 visual reports and supported a 30+ page digital retail platform prototype in Axure",
+          "Cleaned and analyzed 18,000+ retail records in Python and Tableau for a building-materials client's two-year outlook"
+        ]
+      }
+    },
+    {
+      "org": {
+        "zh": "IQVIA 艾昆纬 · 上海",
+        "en": "IQVIA · Shanghai"
+      },
+      "role": {
+        "zh": "分析师实习生",
+        "en": "Analyst Intern"
+      },
+      "period": "2023.06 – 2024.04",
+      "bullets": {
+        "zh": [
+          "分析 12 款药品定价与消费者行为，整理 10 余次专家访谈，支持市场和定价策略评估"
+        ],
+        "en": [
+          "Analyzed pricing and consumer behavior for 12 drugs and synthesized 10+ expert interviews to support market and pricing strategy"
+        ]
       }
     }
   ],
-
   "projects": [
     {
+      "id": "dayweave",
+      "name": {
+        "zh": "Dayweave",
+        "en": "Dayweave"
+      },
+      "oneLiner": {
+        "zh": "只提建议、获批才动手的 AI 日程助手。",
+        "en": "An AI daily planner that proposes and waits for approval."
+      },
+      "role": {
+        "zh": "产品、交互与 AI 辅助开发（独立完成）",
+        "en": "Product, UX & AI-assisted development, solo"
+      },
+      "stack": [
+        "React",
+        "TypeScript",
+        "Claude API"
+      ],
+      "link": "https://animenzzz128.github.io/projects/dayweave"
+    },
+    {
+      "id": "toutoule",
+      "name": {
+        "zh": "投投乐",
+        "en": "TouTouLe"
+      },
+      "oneLiner": {
+        "zh": "带原文证据的 AI 岗位筛选工具。",
+        "en": "An AI tool that triages job postings with evidence."
+      },
+      "role": {
+        "zh": "产品、评测与上线（独立完成），AI 辅助开发",
+        "en": "Product, evals & launch, solo; AI-assisted build"
+      },
+      "stack": [
+        "Python",
+        "Claude API",
+        "Streamlit"
+      ],
+      "link": "https://animenzzz128.github.io/projects/toutoule"
+    },
+    {
+      "id": "gradtrip",
+      "name": {
+        "zh": "毕业去哪儿",
+        "en": "Grad Trip"
+      },
+      "oneLiner": {
+        "zh": "毕业旅行拼团规划：一个链接从投票到分账。",
+        "en": "Group planner for graduation trips: one link from vote to settle-up."
+      },
+      "role": {
+        "zh": "主导产品设计与验收，Claude Code 辅助开发",
+        "en": "Product design & acceptance, built with Claude Code"
+      },
+      "stack": [
+        "React",
+        "Netlify Functions"
+      ],
+      "link": "https://animenzzz128.github.io/projects/gradplanner"
+    },
+    {
       "id": "pixel-room",
-      "name": { "zh": "像素小屋", "en": "Pixel Room" },
-      "oneLiner": { "zh": "你现在看到的这个互动主页。", "en": "The interactive homepage you're looking at." },
-      "role": { "zh": "构思、美术方向、内容", "en": "Concept, art direction, content" },
-      "stack": ["HTML", "Canvas", "Pixel Art"],
-      "link": ""
+      "name": {
+        "zh": "像素小屋",
+        "en": "Jacky's Room"
+      },
+      "oneLiner": {
+        "zh": "你现在看到的这个互动主页。",
+        "en": "The interactive homepage you're looking at."
+      },
+      "role": {
+        "zh": "构思、美术方向、内容；Claude 编写设计稿和初版原型，Google AI Studio 提供脚手架，Claude Code 辅助开发",
+        "en": "Concept, art direction and content; design brief and first prototype by Claude, scaffold from Google AI Studio, built with Claude Code"
+      },
+      "stack": [
+        "HTML",
+        "Canvas",
+        "Pixel Art"
+      ],
+      "link": "https://animenzzz128.github.io/jacky-s-room/"
     },
     {
-      "id": "project-b",
-      "name": { "zh": "【示例】项目 B", "en": "[Sample] Project B" },
-      "oneLiner": { "zh": "【示例】一句话说明它解决了什么问题。", "en": "[Sample] One line on the problem it solves." },
-      "role": { "zh": "【示例】我负责的部分", "en": "[Sample] My part" },
-      "stack": ["Python", "React"],
-      "link": ""
+      "id": "grandma",
+      "name": {
+        "zh": "奶奶的 Wi-Fi 密码",
+        "en": "Grandma's Wi-Fi Password"
+      },
+      "oneLiner": {
+        "zh": "对话推理解谜游戏：AI 是草堆，密码是那根针。",
+        "en": "A conversational deduction game where the AI is the haystack."
+      },
+      "role": {
+        "zh": "游戏设计、产品与 AI 评测（独立完成），使用 Claude Code 辅助开发",
+        "en": "Game design, product & AI evaluation, solo; built with Claude Code"
+      },
+      "stack": [
+        "TypeScript",
+        "three.js",
+        "Claude Haiku"
+      ],
+      "link": "https://animenzzz128.github.io/projects/grandma"
     },
     {
-      "id": "project-c",
-      "name": { "zh": "【示例】项目 C", "en": "[Sample] Project C" },
-      "oneLiner": { "zh": "【示例】一句话说明它解决了什么问题。", "en": "[Sample] One line on the problem it solves." },
-      "role": { "zh": "【示例】我负责的部分", "en": "[Sample] My part" },
-      "stack": ["Figma", "Research"],
-      "link": ""
+      "id": "level0",
+      "name": {
+        "zh": "Level 0: Threshold",
+        "en": "Level 0: Threshold"
+      },
+      "oneLiner": {
+        "zh": "后室题材的第一人称生存恐怖射击网页游戏。",
+        "en": "A first-person Backrooms survival-horror shooter in the browser."
+      },
+      "role": {
+        "zh": "玩法方向与验收；Google AI Studio 生成初版，Claude Code 辅助迭代",
+        "en": "Gameplay direction and acceptance; first version from Google AI Studio, iterated with Claude Code"
+      },
+      "stack": [
+        "three.js",
+        "React",
+        "Web Audio"
+      ],
+      "link": "https://animenzzz128.github.io/level-0-survive/"
     }
   ],
-
   "timeline": [
     {
-      "period": "2018 – 2022",
-      "title": { "zh": "【示例】高中 / 本科", "en": "[Sample] High school / Undergrad" },
-      "org": { "zh": "【示例】学校名", "en": "[Sample] School" },
-      "text": { "zh": "【示例】这一阶段最重要的一件事。", "en": "[Sample] The most important thing from this chapter." }
+      "period": "– 2025",
+      "title": {
+        "zh": "本科",
+        "en": "Undergrad"
+      },
+      "org": {
+        "zh": "杜克大学 · 经济学学士（政治经济学）",
+        "en": "Duke University · Bachelor of Economics (Political Economy)"
+      },
+      "text": {
+        "zh": "GPA 3.807。",
+        "en": "GPA 3.807."
+      }
     },
     {
-      "period": "2022 – 2026",
-      "title": { "zh": "【示例】本科 / 研究生", "en": "[Sample] Undergrad / Grad" },
-      "org": { "zh": "【示例】学校名 · 专业", "en": "[Sample] School · Major" },
-      "text": { "zh": "【示例】你学了什么、做了什么、改变了什么。", "en": "[Sample] What you studied, built, or changed." }
+      "period": "– 2026",
+      "title": {
+        "zh": "硕士",
+        "en": "Master's"
+      },
+      "org": {
+        "zh": "不列颠哥伦比亚大学 · 管理学硕士",
+        "en": "University of British Columbia · Master of Management"
+      },
+      "text": {
+        "zh": "2026 年毕业。",
+        "en": "Graduated 2026."
+      }
     },
     {
-      "period": "2026 –",
-      "title": { "zh": "【示例】下一站", "en": "[Sample] Next chapter" },
-      "org": { "zh": "【示例】正在找的方向", "en": "[Sample] What you're looking for" },
-      "text": { "zh": "【示例】你希望下一份工作 / 下一段经历是什么样的。", "en": "[Sample] What you want next." }
+      "period": "2026",
+      "title": {
+        "zh": "短期项目",
+        "en": "Short program"
+      },
+      "org": {
+        "zh": "北京大学 · DBIC（Doing Business in China）",
+        "en": "Peking University · Doing Business in China"
+      },
+      "text": {
+        "zh": "在北大光华做过项目汇报。",
+        "en": "Presented at PKU Guanghua."
+      }
+    },
+    {
+      "period": "– 2027",
+      "title": {
+        "zh": "在读",
+        "en": "Now"
+      },
+      "org": {
+        "zh": "耶鲁管理学院 · 全球商业与社会管理学硕士（STEM）",
+        "en": "Yale School of Management · MMS, Global Business & Society (STEM)"
+      },
+      "text": {
+        "zh": "2027 年 6 月毕业，正在寻找全职机会。",
+        "en": "Graduating June 2027; open to full-time roles."
+      }
     }
   ],
-
   "skills": [
     {
-      "name": { "zh": "【示例】编程", "en": "[Sample] Coding" },
-      "items": [ { "name": "Python", "level": 4 }, { "name": "JavaScript", "level": 3 }, { "name": "SQL", "level": 3 } ]
+      "name": {
+        "zh": "分析与数据",
+        "en": "Analysis & data"
+      },
+      "items": [
+        {
+          "name": "Python"
+        },
+        {
+          "name": "SQL"
+        },
+        {
+          "name": "R"
+        },
+        {
+          "name": "Stata"
+        },
+        {
+          "name": "Excel"
+        },
+        {
+          "name": "Tableau"
+        }
+      ]
     },
     {
-      "name": { "zh": "【示例】设计", "en": "[Sample] Design" },
-      "items": [ { "name": "Figma", "level": 4 }, { "name": "Pixel Art", "level": 2 } ]
+      "name": {
+        "zh": "产品与原型",
+        "en": "Product & prototyping"
+      },
+      "items": [
+        {
+          "name": "Axure"
+        },
+        {
+          "name": "React"
+        },
+        {
+          "name": "TypeScript"
+        },
+        {
+          "name": "Claude API"
+        },
+        {
+          "name": "Streamlit"
+        },
+        {
+          "name": "Node.js"
+        }
+      ]
     },
     {
-      "name": { "zh": "【示例】语言", "en": "[Sample] Languages" },
-      "items": [ { "name": "中文", "level": 5 }, { "name": "English", "level": 5 } ]
+      "name": {
+        "zh": "表达",
+        "en": "Communication"
+      },
+      "items": [
+        {
+          "name": "PowerPoint"
+        },
+        {
+          "name": "Think-cell"
+        }
+      ]
+    },
+    {
+      "name": {
+        "zh": "语言",
+        "en": "Languages"
+      },
+      "items": [
+        {
+          "name": "普通话（母语） / Mandarin (native)"
+        },
+        {
+          "name": "English (fluent) / 英语（熟练）"
+        },
+        {
+          "name": "日本語 (conversational) / 日语（日常交流）"
+        }
+      ]
     }
   ],
-
-  "music": [
-    { "song": "【示例】歌名 1", "artist": "【示例】歌手", "note": { "zh": "【示例】写代码时循环播放", "en": "[Sample] On repeat while coding" } },
-    { "song": "【示例】歌名 2", "artist": "【示例】歌手", "note": { "zh": "【示例】一句话评语", "en": "[Sample] One-line note" } },
-    { "song": "【示例】歌名 3", "artist": "【示例】歌手", "note": { "zh": "【示例】一句话评语", "en": "[Sample] One-line note" } }
-  ],
-
+  "music": [],
   "places": [
-    { "name": { "zh": "【示例】家乡", "en": "[Sample] Hometown" }, "type": "lived", "text": { "zh": "【示例】一句话：这里给了你什么。", "en": "[Sample] What this place gave you." } },
-    { "name": { "zh": "【示例】现在住的城市", "en": "[Sample] Current city" }, "type": "lived", "text": { "zh": "【示例】一句话。", "en": "[Sample] One line." } },
-    { "name": { "zh": "【示例】最喜欢的旅行地", "en": "[Sample] Favorite trip" }, "type": "visited", "text": { "zh": "【示例】一句话。", "en": "[Sample] One line." } }
+    {
+      "name": {
+        "zh": "美国纽黑文",
+        "en": "New Haven, CT"
+      },
+      "type": "lived",
+      "text": {
+        "zh": "在耶鲁管理学院读书。",
+        "en": "Studying at Yale SOM."
+      }
+    },
+    {
+      "name": {
+        "zh": "上海",
+        "en": "Shanghai"
+      },
+      "type": "lived",
+      "text": {
+        "zh": "在 TikTok Shop 和 IQVIA 实习过的城市。",
+        "en": "Where I interned at TikTok Shop and IQVIA."
+      }
+    },
+    {
+      "name": {
+        "zh": "北京",
+        "en": "Beijing"
+      },
+      "type": "lived",
+      "text": {
+        "zh": "在德勤实习，也在北大上过 DBIC 项目。",
+        "en": "Interned at Deloitte; took the DBIC program at Peking University."
+      }
+    },
+    {
+      "name": {
+        "zh": "印尼 Bromo 火山",
+        "en": "Mount Bromo, Indonesia"
+      },
+      "type": "visited",
+      "text": {
+        "zh": "有机会就去旅行，这是其中一站。",
+        "en": "I travel whenever I can; this was one stop."
+      }
+    }
   ],
-
   "facts": {
-    "zh": ["【示例】冷知识 1：比如你每天喝几杯咖啡。", "【示例】冷知识 2：一个很少人知道的小习惯。", "【示例】冷知识 3：桌上那只青蛙的来历。", "【示例】冷知识 4：你最奇怪的技能。"],
-    "en": ["[Sample] Fun fact 1: how many coffees a day.", "[Sample] Fun fact 2: a little habit few people know.", "[Sample] Fun fact 3: where the frog plush came from.", "[Sample] Fun fact 4: your oddest skill."]
+    "zh": [],
+    "en": []
   },
-
   "frogSecret": {
-    "zh": "🐸 呱呱呱！你发现了隐藏台词：【示例】在这里写一句只有好奇的人才能看到的话。",
-    "en": "🐸 Ribbit! You found a secret line: [Sample] write something only curious visitors will see."
+    "zh": "🐸 呱呱！你找到了隐藏台词：谢谢你愿意点这么多次。",
+    "en": "🐸 Ribbit! You found the secret line: thanks for clicking this many times."
   },
-
   "sections": {
     "reading": {
-      "intro": { "zh": "书架上最近在读、读完觉得值得推荐的书。", "en": "What's on the shelf lately." },
-      "items": [
-        { "title": { "zh": "【示例】书名 1", "en": "[Sample] Book 1" }, "meta": { "zh": "作者", "en": "Author" }, "text": { "zh": "【示例】一句话读后感。", "en": "[Sample] One-line takeaway." } },
-        { "title": { "zh": "【示例】书名 2", "en": "[Sample] Book 2" }, "meta": { "zh": "作者", "en": "Author" }, "text": { "zh": "【示例】一句话读后感。", "en": "[Sample] One-line takeaway." } }
-      ]
+      "intro": {
+        "zh": "书架上最近在读、读完觉得值得推荐的书。",
+        "en": "What's on the shelf lately."
+      },
+      "items": []
     },
     "goals": {
-      "intro": { "zh": "贴在墙上的便利贴：今年想做的事。", "en": "Sticky notes on the wall: things I want to do this year." },
-      "items": [
-        { "title": { "zh": "【示例】做完像素小屋并上线", "en": "[Sample] Ship the pixel room" }, "done": false },
-        { "title": { "zh": "【示例】读完 12 本书", "en": "[Sample] Read 12 books" }, "done": false },
-        { "title": { "zh": "【示例】一件已经完成的事", "en": "[Sample] Something already done" }, "done": true }
-      ]
+      "intro": {
+        "zh": "贴在墙上的便利贴：今年想做的事。",
+        "en": "Sticky notes on the wall: things I want to do this year."
+      },
+      "items": []
     },
     "awards": {
-      "items": [
-        { "title": { "zh": "【示例】奖项名称", "en": "[Sample] Award name" }, "meta": "2025", "text": { "zh": "【示例】颁发单位 · 一句话说明。", "en": "[Sample] Issuer · one line." } },
-        { "title": { "zh": "【示例】奖项名称", "en": "[Sample] Award name" }, "meta": "2024", "text": { "zh": "【示例】颁发单位 · 一句话说明。", "en": "[Sample] Issuer · one line." } }
-      ]
+      "items": []
     },
     "education": {
       "items": [
-        { "title": { "zh": "【示例】学校名", "en": "[Sample] School" }, "meta": "2022 – 2026", "text": { "zh": "【示例】专业 · 学位 · 一句话亮点（课程、成绩、社团）。", "en": "[Sample] Major · degree · one highlight." } }
+        {
+          "title": {
+            "zh": "耶鲁大学管理学院",
+            "en": "Yale School of Management"
+          },
+          "meta": "2027",
+          "text": {
+            "zh": "全球商业与社会管理学硕士 · STEM",
+            "en": "MMS, Global Business & Society · STEM"
+          }
+        },
+        {
+          "title": {
+            "zh": "不列颠哥伦比亚大学",
+            "en": "University of British Columbia"
+          },
+          "meta": "2026",
+          "text": {
+            "zh": "管理学硕士",
+            "en": "Master of Management"
+          }
+        },
+        {
+          "title": {
+            "zh": "北京大学",
+            "en": "Peking University"
+          },
+          "meta": "2026",
+          "text": {
+            "zh": "DBIC 短期项目",
+            "en": "Doing Business in China"
+          }
+        },
+        {
+          "title": {
+            "zh": "杜克大学",
+            "en": "Duke University"
+          },
+          "meta": "2025",
+          "text": {
+            "zh": "经济学学士（政治经济学）· GPA 3.807",
+            "en": "Bachelor of Economics, Political Economy · GPA 3.807"
+          }
+        }
       ]
     },
     "now": {
-      "intro": { "zh": "挂历上这个月圈出来的事。", "en": "What's circled on the calendar this month." },
+      "intro": {
+        "zh": "挂历上这个月圈出来的事。",
+        "en": "What's circled on the calendar this month."
+      },
       "items": [
-        { "title": { "zh": "【示例】在做：一个项目", "en": "[Sample] Building: a project" } },
-        { "title": { "zh": "【示例】在准备：一件事", "en": "[Sample] Preparing: something" } },
-        { "title": { "zh": "【示例】在期待：一件事", "en": "[Sample] Looking forward to: something" } }
+        {
+          "title": {
+            "zh": "在做：个人项目和网页游戏",
+            "en": "Building: personal projects and browser games"
+          }
+        },
+        {
+          "title": {
+            "zh": "在找：2027 年的全职机会",
+            "en": "Looking for: full-time roles for 2027"
+          }
+        }
       ]
     },
     "learning": {
-      "intro": { "zh": "绿萝每长一片叶子，我就多学会一点。", "en": "One new leaf for every new thing learned." },
-      "items": [
-        { "title": { "zh": "【示例】在学的技能 1", "en": "[Sample] Skill 1" }, "progress": 3 },
-        { "title": { "zh": "【示例】在学的技能 2", "en": "[Sample] Skill 2" }, "progress": 1 }
-      ]
+      "intro": {
+        "zh": "绿萝每长一片叶子，我就多学会一点。",
+        "en": "One new leaf for every new thing learned."
+      },
+      "items": []
     },
     "hobbies": {
       "items": [
-        { "title": { "zh": "【示例】爱好 1", "en": "[Sample] Hobby 1" }, "text": { "zh": "【示例】为什么喜欢 / 做到什么程度。", "en": "[Sample] Why you love it." } },
-        { "title": { "zh": "【示例】爱好 2", "en": "[Sample] Hobby 2" }, "text": { "zh": "【示例】为什么喜欢 / 做到什么程度。", "en": "[Sample] Why you love it." } }
+        {
+          "title": {
+            "zh": "乐队",
+            "en": "Band"
+          },
+          "text": {
+            "zh": "在乐队里唱歌、弹键盘，和乐队一起演出。",
+            "en": "I sing and play keys in a band, and perform with them."
+          }
+        },
+        {
+          "title": {
+            "zh": "旅行",
+            "en": "Travel"
+          },
+          "text": {
+            "zh": "有机会就去旅行，比如印尼的 Bromo 火山。",
+            "en": "I travel whenever I can, Mount Bromo in Indonesia among them."
+          }
+        }
       ]
     }
   },
-
   "contact": {
-    "email": "your.name@example.com",
+    "email": "jacky.yao@yale.edu",
     "links": [
-      { "label": "LinkedIn", "url": "https://www.linkedin.com/" },
-      { "label": "GitHub", "url": "https://github.com/" }
+      {
+        "label": "LinkedIn",
+        "url": "https://www.linkedin.com/in/jiaqi-jacky-yao-94188b25a/"
+      },
+      {
+        "label": "GitHub",
+        "url": "https://github.com/animenzzz128"
+      },
+      {
+        "label": "Website",
+        "url": "https://animenzzz128.github.io/"
+      }
     ],
-    "resume": ""
+    "resume": "https://animenzzz128.github.io/resume/Jiaqi_Yao_Resume_EN.pdf"
   }
 }

@@ -121,7 +121,7 @@ python tools/add_memory.py --photo <照片> --entry <介绍.json> --grid <网格
 ## 6. 用户确认后提交
 
 用户同意后再提交。按这个仓库的习惯：新建分支 → 提交 → 推送 → 开 PR → 合进 main。
-提醒用户：AI Studio 要在 Settings → GitHub 里 Pull，然后重新 Publish，网站上才会出现。
+合进 main 后 GitHub Pages 会自动发布（https://animenzzz128.github.io/jacky-s-room/，一两分钟）。如果还在用 AI Studio，提醒用户在 Settings → GitHub 里 Pull 再 Publish。
 
 ## 修改和撤下
 

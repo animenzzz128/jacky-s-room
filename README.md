@@ -9,6 +9,7 @@
 | `prototype/` | **网站本体**（纯 HTML / CSS / JS，无构建）。说明见 [prototype/README.md](prototype/README.md)，交接说明见 [prototype/STUDIO-HANDOFF.md](prototype/STUDIO-HANDOFF.md) |
 | `server.ts` | Node 服务器：静态托管 `prototype/`（AI Studio / Cloud Run 发布用），没有后端接口 |
 | `metadata.json` | AI Studio 的项目信息 |
+| `.github/workflows/pages.yml` | 合进 main 后自动发布到 GitHub Pages |
 | `tools/` | `add_memory.py`（照片 → 房间摆件）；美术工具：`pixel_snap.py`（AI 图吸附成真像素）、`draw_room.py`（逐像素画整间房）、`make_outpaint.py` / `merge_outpaint.py`（用生图工具扩图） |
 | `.claude/skills/add-memory/` | 照片摆件的聊天工作流说明（Claude Code 会自动读取） |
 | `art-source/` | 原始插画、扩图画布和说明；`memories/` 里是照片摆件的像素网格原稿 |
@@ -39,8 +40,8 @@ Claude 会按 `.claude/skills/add-memory/SKILL.md`：看照片 → 画一个代�
 
 ## 部署注意
 
-- AI Studio：合进 main 后，在 Settings → GitHub 里 Pull，再重新 Publish
-- 也可以把 `prototype/` 原样放到任何静态托管（GitHub Pages、Vercel 等）
+- **GitHub Pages**：合进 main 后，`.github/workflows/pages.yml` 会自动把 `prototype/` 发布到 https://animenzzz128.github.io/jacky-s-room/
+- **AI Studio**（如果还在用）：在 Settings → GitHub 里 Pull，再重新 Publish
 
 ---
 
