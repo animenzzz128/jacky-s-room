@@ -1,5 +1,5 @@
 {
-  "_说明": "所有面板里的文字都在这里，每一项都有 zh / en 两个版本。当前内容取自个人网站 animenzzz128.github.io 已公开的信息；书单、目标、荣誉、在学、冷知识还没有内容，对应物件暂时放在 scene.json 的 _hiddenHotspots 里，填好后移回 hotspots 即可。",
+  "_说明": "所有面板里的文字都在这里，每一项都有 zh / en 两个版本。面板里关于我的事实取自个人网站 animenzzz128.github.io 已公开的内容；其中 Level 0、毕业去哪儿（Grad Trip）、像素小屋（Jacky's Room）三条以网站分支 feat/projects-and-games 为准，该分支待部署，部署后才与线上网站一致；欢迎语、彩蛋（青蛙台词）和面板引导语是小屋自写的界面文字，不来自网站。书单、目标、荣誉、在学、冷知识还没有内容，对应物件暂时放在 scene.json 的 _hiddenHotspots 里，填好后移回 hotspots 即可。",
   "profile": {
     "name": {
       "zh": "Jacky",
@@ -68,12 +68,12 @@
       "period": "2025.05 – 2025.08",
       "bullets": {
         "zh": [
-          "构建 MBP（商业化资源包）自动化商业论证，助力东南亚 MBP GMV 渗透率提升 1.5 个百分点",
+          "为 MBP（商业化资源包）自动化搭建数据分析与商业论证，助力东南亚 MBP GMV 渗透率提升 1.5 个百分点",
           "从零搭建并维护 50 余份 Excel 看板，分析累计约 20 万条商家、达人、商品及活动数据点",
           "在东南亚六国累计筛选 5,000 余名商家与达人"
         ],
         "en": [
-          "Built an automated business case for MBP (Monetized Business Packages), contributing to a +1.5pp MBP GMV penetration gain in Southeast Asia",
+          "Built the analytics and business case for automating MBP (Monetized Business Packages), contributing to a +1.5pp MBP GMV penetration gain in Southeast Asia",
           "Built and maintained 50+ Excel dashboards over about 200K seller, creator, product and campaign data points",
           "Screened 5,000+ sellers and creators across six Southeast Asian markets"
         ]
@@ -96,7 +96,7 @@
         ],
         "en": [
           "Delivered 6 visual reports and supported a 30+ page digital retail platform prototype in Axure",
-          "Cleaned and analysed 18,000+ retail records in Python and Tableau for a building-materials client's two-year outlook"
+          "Cleaned and analyzed 18,000+ retail records in Python and Tableau for a building-materials client's two-year outlook"
         ]
       }
     },
@@ -115,7 +115,7 @@
           "分析 12 款药品定价与消费者行为，整理 10 余次专家访谈，支持市场和定价策略评估"
         ],
         "en": [
-          "Analysed pricing and consumer behaviour for 12 drugs and synthesised 10+ expert interviews to support market and pricing strategy"
+          "Analyzed pricing and consumer behavior for 12 drugs and synthesized 10+ expert interviews to support market and pricing strategy"
         ]
       }
     }
@@ -187,15 +187,15 @@
       "id": "pixel-room",
       "name": {
         "zh": "像素小屋",
-        "en": "Pixel Room"
+        "en": "Jacky's Room"
       },
       "oneLiner": {
         "zh": "你现在看到的这个互动主页。",
         "en": "The interactive homepage you're looking at."
       },
       "role": {
-        "zh": "构思、美术方向、内容；Google AI Studio 生成初版，Claude Code 辅助开发",
-        "en": "Concept, art direction and content; first version from Google AI Studio, built with Claude Code"
+        "zh": "构思、美术方向、内容；Claude 编写设计稿和初版原型，Google AI Studio 提供脚手架，Claude Code 辅助开发",
+        "en": "Concept, art direction and content; design brief and first prototype by Claude, scaffold from Google AI Studio, built with Claude Code"
       },
       "stack": [
         "HTML",
@@ -215,8 +215,8 @@
         "en": "A conversational deduction game where the AI is the haystack."
       },
       "role": {
-        "zh": "游戏设计、产品与 AI 评测（独立完成）",
-        "en": "Game design, product & AI evaluation, solo"
+        "zh": "游戏设计、产品与 AI 评测（独立完成），使用 Claude Code 辅助开发",
+        "en": "Game design, product & AI evaluation, solo; built with Claude Code"
       },
       "stack": [
         "TypeScript",
@@ -228,7 +228,7 @@
     {
       "id": "level0",
       "name": {
-        "zh": "Level 0：后室",
+        "zh": "Level 0: Threshold",
         "en": "Level 0: Threshold"
       },
       "oneLiner": {
@@ -256,7 +256,7 @@
       },
       "org": {
         "zh": "杜克大学 · 经济学学士（政治经济学）",
-        "en": "Duke University · BA Economics (Political Economy)"
+        "en": "Duke University · Bachelor of Economics (Political Economy)"
       },
       "text": {
         "zh": "GPA 3.807。",
@@ -282,7 +282,7 @@
       "period": "2026",
       "title": {
         "zh": "短期项目",
-        "en": "Short programme"
+        "en": "Short program"
       },
       "org": {
         "zh": "北京大学 · DBIC（Doing Business in China）",
@@ -426,7 +426,7 @@
       "type": "lived",
       "text": {
         "zh": "在德勤实习，也在北大上过 DBIC 项目。",
-        "en": "Interned at Deloitte; took the DBIC programme at Peking University."
+        "en": "Interned at Deloitte; took the DBIC program at Peking University."
       }
     },
     {
@@ -510,7 +510,7 @@
           "meta": "2025",
           "text": {
             "zh": "经济学学士（政治经济学）· GPA 3.807",
-            "en": "BA Economics, Political Economy · GPA 3.807"
+            "en": "Bachelor of Economics, Political Economy · GPA 3.807"
           }
         }
       ]
@@ -594,13 +594,9 @@
         "en": "The day the room was born"
       },
       "date": "2026-11",
-      "place": {
-        "zh": "我的书桌",
-        "en": "My desk"
-      },
       "story": {
-        "zh": "这是小屋的第一张插画，也是这个网站的起点。",
-        "en": "The very first illustration of this room, and where this site began."
+        "zh": "这是小屋的原图：一张 AI 生成的插画，再用脚本吸附成像素网格。这个网站就是从这里开始的。",
+        "en": "The room's original picture: an AI-generated illustration, snapped to a pixel grid by script. This site started here."
       },
       "tags": [
         "小屋",
